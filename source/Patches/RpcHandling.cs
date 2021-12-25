@@ -847,8 +847,8 @@ namespace TownOfUs
                 if (Check(CustomGameOptions.RetributionistOn))
                     CrewmateRoles.Add((typeof(Retributionist), CustomRPC.SetRetributionist, CustomGameOptions.RetributionistOn));
 
-                if (Check(CustomGameOptions.IllusionistOn))
-                    CrewmateRoles.Add((typeof(Illusionist), CustomRPC.SetIllusionist, CustomGameOptions.IllusionistOn));
+                // if (Check(CustomGameOptions.IllusionistOn))
+                //     CrewmateRoles.Add((typeof(Illusionist), CustomRPC.SetIllusionist, CustomGameOptions.IllusionistOn));
                 #endregion
                 #region Neutral Roles
                 if (Check(CustomGameOptions.JesterOn))

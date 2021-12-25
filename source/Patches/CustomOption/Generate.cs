@@ -19,7 +19,7 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption AltruistOn;
         public static CustomNumberOption RetributionistOn;
         public static CustomNumberOption HaunterOn;
-        public static CustomNumberOption IllusionistOn;
+        // public static CustomNumberOption IllusionistOn;
 
 
         public static CustomHeaderOption NeutralRoles;
@@ -256,8 +256,8 @@ namespace TownOfUs.CustomOption
                 PercentFormat);
             HaunterOn = new CustomNumberOption(true, num++, "<color=#D3D3D3FF>Haunter</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
-            IllusionistOn = new CustomNumberOption(true, num++, "<color=#BB4DFFFF>Illusionist</color>", 0f, 0f, 100f, 10f,
-                PercentFormat);
+            // IllusionistOn = new CustomNumberOption(true, num++, "<color=#BB4DFFFF>Illusionist</color>", 0f, 0f, 100f, 10f,
+            //     PercentFormat);
 
 
             NeutralRoles = new CustomHeaderOption(num++, "Neutral Roles");
@@ -458,6 +458,7 @@ namespace TownOfUs.CustomOption
                 new CustomToggleOption(num++, "Target's Body Disappears On Beginning Of Revive", false);
 
             Retributionist = new CustomHeaderOption(num++, "<color=#FFFF9FFF>Retributionist</color>");
+
             RetributionistKills = new CustomNumberOption(num++, "Number Of Retributionist Kills", 1, 1, 15, 1);
             RetributionistGuessNeutrals = new CustomToggleOption(num++, "Retributionist Can Guess Neutral Roles", false);
             RetributionistMultiKill = new CustomToggleOption(num++, "Retributionist Can Kill More Than Once Per Meeting", false);

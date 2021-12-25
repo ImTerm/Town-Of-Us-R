@@ -29,7 +29,7 @@ namespace TownOfUs
         SetUnderdog,
         SetRetributionist,
         SetGrenadier,
-        SetIllusionist,
+        // SetIllusionist,
 
         SetTorch,
         SetDiseased,

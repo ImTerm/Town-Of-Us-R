@@ -39,7 +39,7 @@ namespace TownOfUs
         public static int RetributionistOn => (int)Generate.RetributionistOn.Get();
         public static int HaunterOn => (int)Generate.HaunterOn.Get();
         public static int GrenadierOn => (int)Generate.GrenadierOn.Get();
-        public static int IllusionistOn => (int)Generate.IllusionistOn.Get();
+        // public static int IllusionistOn => (int)Generate.IllusionistOn.Get();
         public static int TorchOn => (int)Generate.TorchOn.Get();
         public static int DiseasedOn => (int)Generate.DiseasedOn.Get();
         public static int FlashOn => (int)Generate.FlashOn.Get();
