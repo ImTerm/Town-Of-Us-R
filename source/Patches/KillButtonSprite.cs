@@ -21,7 +21,8 @@ namespace TownOfUs
         private static Sprite Seer => TownOfUs.SeerSprite;
         private static Sprite Douse => TownOfUs.DouseSprite;
         private static Sprite Revive => TownOfUs.ReviveSprite;
-        // private static Sprite Impersonate => TownOfUs.MorphSprite;
+        private static Sprite Illusion => TownOfUs.IllusionSprite;
+        private static Sprite Transport => TownOfUs.TransportSprite;
 
         private static Sprite Button => TownOfUs.ButtonSprite;
 
@@ -61,11 +62,16 @@ namespace TownOfUs
                 __instance.KillButton.graphic.sprite = Revive;
                 flag = true;
             }
-            // else if (PlayerControl.LocalPlayer.Is(RoleEnum.Illusionist))
-            // {
-            //     __instance.KillButton.graphic.sprite = Impersonate;
-            //     flag = true;
-            // }
+            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Illusionist))
+            {
+                __instance.KillButton.graphic.sprite = Illusion;
+                flag = true;
+            }
+            else if (PlayerControl.LocalPlayer.Is(RoleEnum.Transporter))
+            {
+                __instance.KillButton.graphic.sprite = Transport;
+                flag = true;
+            }
             else
             {
                 __instance.KillButton.graphic.sprite = TranslationController.Instance.GetImage(ImageNames.KillButton);

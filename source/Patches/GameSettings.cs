@@ -14,6 +14,7 @@ namespace TownOfUs
     public static class GameSettings
     {
         public static bool AllOptions;
+        public static bool LastTab;
 
         /*public static string StringBuild()
         {
@@ -102,8 +103,8 @@ namespace TownOfUs
         {
             private static void Postfix()
             {
-                if (Input.GetKeyInt(KeyCode.Tab)) AllOptions = !AllOptions;
-
+                if (LastTab && !Input.GetKeyInt(KeyCode.Tab)) AllOptions = !AllOptions;
+                LastTab = Input.GetKeyInt(KeyCode.Tab);
                 //                HudManager.Instance.GameSettings.scale = 0.5f;
             }
         }

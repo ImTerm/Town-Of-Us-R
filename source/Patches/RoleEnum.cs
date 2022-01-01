@@ -22,7 +22,9 @@ namespace TownOfUs
         Phantom,
         Retributionist,
         Haunter,
-        // Illusionist,
+        Illusionist,
+        Transporter,
+        Agent,
 
         Miner,
         Swooper,

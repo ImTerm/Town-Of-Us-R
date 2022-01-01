@@ -88,6 +88,18 @@ Join our [Discord](https://discord.gg/ugyc4EVUYZ) if you have any problems or wa
 <details>
   <summary> Changelog </summary>
   <details>
+  <summary> v2.4.2 </summary>
+  <ul> <li>New Role: Illusionist (Crewmate with glitch mimic, and it swaps appearances with the target)</li> </ul>
+  <ul> <li>New Role: Transporter (Can choose two players and swap their locations)</li> </ul>
+  <ul> <li>Added Jester can vent setting</li> </ul>
+  <ul> <li>Added a setting where you can keep the Glitch protected from the Impostors and vice-versa until the target kills a number of players</li> </ul>
+  <ul> <li>You can now hit the Esc key to exit the player selection menu for the Glitch Mimic as well as with Illusion and Transport</li> </ul>
+  <ul> <li>The Arsonist's doused players and the Executioner's target no longer show up black while dead (for readability)</li> </ul>
+  <ul> <li>Changed the color for the Retributionist to look less similar to the Sheriff</li> </ul>
+  <ul> <li>The Glitch now wins if there is one player alive and it is a Crewmate, like Impostors</li> </ul>
+  <ul> <li>Bug Fix: The in-lobby Tab to show all setting feature now toggles properly (finally!)</li> </ul>
+  </details>
+  <details>
   <summary> v2.4.1 </summary>
   <ul> <li>Support for the new version of Among Us on v2021.12.15</li> </ul>
   </details>

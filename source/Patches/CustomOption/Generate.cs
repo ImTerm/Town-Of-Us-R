@@ -18,8 +18,9 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption SnitchOn;
         public static CustomNumberOption AltruistOn;
         public static CustomNumberOption RetributionistOn;
+        public static CustomNumberOption IllusionistOn;
+        public static CustomNumberOption TransporterOn;
         public static CustomNumberOption HaunterOn;
-        // public static CustomNumberOption IllusionistOn;
 
 
         public static CustomHeaderOption NeutralRoles;
@@ -28,6 +29,7 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption GlitchOn;
         public static CustomNumberOption ExecutionerOn;
         public static CustomNumberOption ArsonistOn;
+        public static CustomNumberOption AgentOn;
         public static CustomNumberOption PhantomOn;
 
 
@@ -87,6 +89,7 @@ namespace TownOfUs.CustomOption
         public static CustomToggleOption SheriffKillsGlitch;
         public static CustomToggleOption SheriffKillsExecutioner;
         public static CustomToggleOption SheriffKillsArsonist;
+        public static CustomToggleOption SheriffKillsAgent;
         public static CustomNumberOption SheriffKillCd;
         public static CustomToggleOption SheriffBodyReport;
 
@@ -131,6 +134,15 @@ namespace TownOfUs.CustomOption
         public static CustomHeaderOption Swapper;
         public static CustomToggleOption SwapperButton;
 
+        public static CustomHeaderOption Illusionist;
+        public static CustomNumberOption IllusionCooldown;
+        public static CustomNumberOption IllusionDuration;
+        public static CustomToggleOption InfiniteIllusion;
+        public static CustomNumberOption IllusionEndCooldown;
+
+        public static CustomHeaderOption Transporter;
+        public static CustomNumberOption TransportCooldown;
+
         public static CustomHeaderOption Jester;
         public static CustomToggleOption JesterButton;
         public static CustomToggleOption JesterVent;
@@ -156,6 +168,12 @@ namespace TownOfUs.CustomOption
         public static CustomHeaderOption Executioner;
         public static CustomStringOption OnTargetDead;
         public static CustomToggleOption ExecutionerButton;
+
+        public static CustomHeaderOption Agent;
+        public static CustomNumberOption IntelCooldown;
+        public static CustomToggleOption ImpHijackKill;
+        public static CustomToggleOption ImpHijackVent;
+        public static CustomToggleOption AgentGameEnd;
 
         public static CustomHeaderOption Phantom;
         public static CustomNumberOption PhantomTasksRemaining;
@@ -252,12 +270,14 @@ namespace TownOfUs.CustomOption
                 PercentFormat);
             AltruistOn = new CustomNumberOption(true, num++, "<color=#660000FF>Altruist</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
-            RetributionistOn = new CustomNumberOption(true, num++, "<color=#FFFF9FFF>Retributionist</color>", 0f, 0f, 100f, 10f,
+            RetributionistOn = new CustomNumberOption(true, num++, "<color=#FFFF99FF>Retributionist</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            IllusionistOn = new CustomNumberOption(true, num++, "<color=#BB4DFFFF>Illusionist</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            TransporterOn = new CustomNumberOption(true, num++, "<color=#00EEFFFF>Transporter</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             HaunterOn = new CustomNumberOption(true, num++, "<color=#D3D3D3FF>Haunter</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
-            // IllusionistOn = new CustomNumberOption(true, num++, "<color=#BB4DFFFF>Illusionist</color>", 0f, 0f, 100f, 10f,
-            //     PercentFormat);
 
 
             NeutralRoles = new CustomHeaderOption(num++, "Neutral Roles");
@@ -270,6 +290,8 @@ namespace TownOfUs.CustomOption
             ExecutionerOn = new CustomNumberOption(true, num++, "<color=#8C4005FF>Executioner</color>", 0f, 0f, 100f,
                 10f, PercentFormat);
             ArsonistOn = new CustomNumberOption(true, num++, "<color=#FF4D00FF>Arsonist</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
+            AgentOn = new CustomNumberOption(true, num++, "<color=#333333FF>The Agent</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             PhantomOn = new CustomNumberOption(true, num++, "<color=#662962FF>Phantom</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
@@ -365,6 +387,8 @@ namespace TownOfUs.CustomOption
                 new CustomToggleOption(num++, "Sheriff Kills Jester", false);
             SheriffKillsGlitch =
                 new CustomToggleOption(num++, "Sheriff Kills The Glitch", false);
+            SheriffKillsAgent =
+                new CustomToggleOption(num++, "Sheriff Kills The Agent", false);
             SheriffKillsExecutioner =
                 new CustomToggleOption(num++, "Sheriff Kills Executioner", false);
             SheriffKillsArsonist =
@@ -457,11 +481,27 @@ namespace TownOfUs.CustomOption
             AltruistTargetBody =
                 new CustomToggleOption(num++, "Target's Body Disappears On Beginning Of Revive", false);
 
-            Retributionist = new CustomHeaderOption(num++, "<color=#FFFF9FFF>Retributionist</color>");
+            Retributionist = new CustomHeaderOption(num++, "<color=#FFFF99FF>Retributionist</color>");
 
             RetributionistKills = new CustomNumberOption(num++, "Number Of Retributionist Kills", 1, 1, 15, 1);
             RetributionistGuessNeutrals = new CustomToggleOption(num++, "Retributionist Can Guess Neutral Roles", false);
             RetributionistMultiKill = new CustomToggleOption(num++, "Retributionist Can Kill More Than Once Per Meeting", false);
+
+            Illusionist =
+                new CustomHeaderOption(num++, "<color=#BB4DFFFF>Illusionist</color>");
+            IllusionCooldown =
+                 new CustomNumberOption(num++, "Illusion Cooldown", 20f, 0f, 60f, 2.5f);
+            IllusionDuration =
+                 new CustomNumberOption(num++, "Illusion Duration", 10f, 0f, 60f, 1f);
+            InfiniteIllusion =
+                 new CustomToggleOption(num++, "Infinite Illusion Duration", false);
+            IllusionEndCooldown =
+                 new CustomNumberOption(num++, "Illusion End Cooldown", 10f, 0f, 60f, 1f);
+
+            Transporter =
+                new CustomHeaderOption(num++, "<color=#00EEFFFF>Transporter</color>");
+            TransportCooldown =
+                 new CustomNumberOption(num++, "Transport Cooldown", 20f, 10f, 60f, 2.5f);
 
             Haunter =
                 new CustomHeaderOption(num++, "<color=#d3d3d3FF>Haunter</color>");
@@ -520,10 +560,22 @@ namespace TownOfUs.CustomOption
             ArsonistButton =
                 new CustomToggleOption(num++, "Arsonist Can Button", true);
 
+            Agent =
+                new CustomHeaderOption(num++, "<color=#333333FF>The Agent</color>");
+            IntelCooldown =
+                 new CustomNumberOption(num++, "Intel Cooldown", 30f, 10f, 60f, 2.5f, CooldownFormat);
+            ImpHijackKill =
+                new CustomToggleOption(num++, "The Agent Can Kill While Imps Hijacked", false);
+            ImpHijackVent =
+                new CustomToggleOption(num++, "The Agent Can Vent While Imps Hijacked", false);
+            AgentGameEnd =
+                new CustomToggleOption(num++, "Game Continues As Long As The Agent Is Alive", false);
+
             Phantom =
                 new CustomHeaderOption(num++, "<color=#662962FF>Phantom</color>");
             PhantomTasksRemaining =
                  new CustomNumberOption(num++, "Tasks Remaining When Phantom Can Be Clicked", 5, 1, 10, 1);
+
 
             Morphling =
                 new CustomHeaderOption(num++, "<color=#FF0000FF>Morphling</color>");

@@ -79,7 +79,8 @@ namespace TownOfUs
 
         private static void SortRoles(List<(Type, CustomRPC, int)> roles, int max = int.MaxValue)
         {
-            roles.Shuffle();
+            var rnd = new System.Random();
+            roles.OrderBy(item => rnd.Next());
             roles.Sort((a, b) =>
             {
                 var a_ = a.Item3 == 100 ? 0 : 100;
@@ -96,8 +97,9 @@ namespace TownOfUs
 
             var impostors = Utils.GetImpostors(infected);//.Where(o => o.Data.Role.Role == RoleTypes.Impostor).ToList();
             var crewmates = Utils.GetCrewmates(impostors);//.Where(o => o.Data.Role.Role == RoleTypes.Crewmate).ToList();
-            crewmates.Shuffle();
-            impostors.Shuffle();
+            var rnd = new System.Random();
+            crewmates.OrderBy(item => rnd.Next());
+            impostors.OrderBy(item => rnd.Next());
             PluginSingleton<TownOfUs>.Instance.Log.LogMessage($"RPC SET ROLE {impostors.Count} -> {crewmates.Count}");
 
             SortRoles(CrewmateRoles);
@@ -176,13 +178,13 @@ namespace TownOfUs
             }
 
             var canHaveModifier = PlayerControl.AllPlayerControls.ToArray().ToList();
-            canHaveModifier.Shuffle();
+            canHaveModifier.OrderBy(item => rnd.Next());
 
             foreach (var (type, rpc, _) in GlobalModifiers)
                 Role.Gen<Modifier>(type, canHaveModifier, rpc);
 
             canHaveModifier.RemoveAll(player => (player.Is(RoleEnum.Glitch) || player.Is(Faction.Impostors)));
-            canHaveModifier.Shuffle();
+            canHaveModifier.OrderBy(item => rnd.Next());
 
             while (canHaveModifier.Count > 0 && CrewmateModifiers.Count > 0)
             {
@@ -331,6 +333,15 @@ namespace TownOfUs
                     case CustomRPC.SetMorphling:
                         readByte = reader.ReadByte();
                         new Morphling(Utils.PlayerById(readByte));
+                        break;
+
+                    case CustomRPC.SetIllusionist:
+                        readByte = reader.ReadByte();
+                        new Illusionist(Utils.PlayerById(readByte));
+                        break;
+                    case CustomRPC.SetTransporter:
+                        readByte = reader.ReadByte();
+                        new Transporter(Utils.PlayerById(readByte));
                         break;
 
                     case CustomRPC.LoveWin:
@@ -503,6 +514,94 @@ namespace TownOfUs
                         glitchRole.MimicTarget = mimicPlayer;
                         glitchRole.IsUsingMimic = true;
                         Utils.Morph(glitchPlayer, mimicPlayer);
+                        break;
+                    case CustomRPC.SetIllusion:
+                        var illusionistPlayer = Utils.PlayerById(reader.ReadByte());
+                        var otherIllusionPlayer = Utils.PlayerById(reader.ReadByte());
+                        var illusionistRole = Role.GetRole<Illusionist>(illusionistPlayer);
+                        illusionistRole.IllusionTarget = otherIllusionPlayer;
+                        illusionistRole.IsUsingIllusion = true;
+                        Utils.Morph(illusionistPlayer, otherIllusionPlayer);
+                        Utils.Morph(otherIllusionPlayer, illusionistPlayer);
+                        if (PlayerControl.LocalPlayer == otherIllusionPlayer)
+                            Coroutines.Start(Utils.FlashCoroutine(illusionistRole.Color));
+                        break;
+                    case CustomRPC.EndIllusion:
+                        var illusionist = Utils.PlayerById(reader.ReadByte());
+                        var otherIllusion = Utils.PlayerById(reader.ReadByte());
+                        var theIllusionistRole = Role.GetRole<Illusionist>(illusionist);
+                        theIllusionistRole.IllusionTarget = null;
+                        theIllusionistRole.IsUsingIllusion = false;
+                        Utils.Unmorph(illusionist);
+                        Utils.Unmorph(otherIllusion);
+                        if (PlayerControl.LocalPlayer == otherIllusion)
+                            Coroutines.Start(Utils.FlashCoroutine(theIllusionistRole.Color));
+                        break;
+                    case CustomRPC.TransportPlayers:
+                        var TransportPlayer1 = Utils.PlayerById(reader.ReadByte());
+                        var TransportPlayer2 = Utils.PlayerById(reader.ReadByte());
+                        // TransportPlayer1.moveable = true;
+                        // TransportPlayer2.moveable = true;
+                        var allDeadBodies = UnityEngine.Object.FindObjectsOfType<DeadBody>();
+                        DeadBody Player1Body = null;
+                        DeadBody Player2Body = null;
+                        if (TransportPlayer1.Data.IsDead)
+                            foreach (var body in allDeadBodies)
+                                if (body.ParentId == TransportPlayer1.PlayerId)
+                                    Player1Body = body;
+                        if (TransportPlayer2.Data.IsDead)
+                            foreach (var body in allDeadBodies)
+                                if (body.ParentId == TransportPlayer2.PlayerId)
+                                    Player2Body = body;
+
+                        if (Player1Body == null && Player2Body == null)
+                        {
+                            var TempPosition = TransportPlayer1.transform.position;
+                            var TempFacing = TransportPlayer1.myRend.flipX;
+                            TransportPlayer1.NetTransform.SnapTo(TransportPlayer2.transform.position);
+                            TransportPlayer1.myRend.flipX = TransportPlayer2.myRend.flipX;
+                            TransportPlayer2.NetTransform.SnapTo(TempPosition);
+                            TransportPlayer2.myRend.flipX = TempFacing;
+                        }
+                        if (Player1Body != null && Player2Body == null)
+                        {
+                            var TempPosition = Player1Body.transform.position;
+                            Player1Body.transform.position = TransportPlayer2.transform.position;
+                            TransportPlayer2.NetTransform.SnapTo(TempPosition);
+                        }
+                        if (Player1Body == null && Player2Body != null)
+                        {
+                            var TempPosition = TransportPlayer1.transform.position;
+                            TransportPlayer1.NetTransform.SnapTo(Player2Body.transform.position);
+                            Player2Body.transform.position = TempPosition;
+                        }
+                        if (Player1Body != null && Player2Body != null)
+                        {
+                            var TempPosition = Player1Body.transform.position;
+                            Player1Body.transform.position = Player2Body.transform.position;
+                            Player2Body.transform.position = TempPosition;
+                        }
+
+                        if (TransportPlayer1.inVent)
+                        {
+                            TransportPlayer1.MyPhysics.RpcExitVent(Vent.currentVent.Id);
+                            TransportPlayer1.MyPhysics.ExitAllVents();
+                        }
+                        if (TransportPlayer2.inVent)
+                        {
+                            TransportPlayer2.MyPhysics.RpcExitVent(Vent.currentVent.Id);
+                            TransportPlayer2.MyPhysics.ExitAllVents();
+                        }
+
+                        if (PlayerControl.LocalPlayer.PlayerId == TransportPlayer1.PlayerId ||
+                            PlayerControl.LocalPlayer.PlayerId == TransportPlayer2.PlayerId)
+                            Coroutines.Start(Utils.FlashCoroutine(new Color(0f, 0.93f, 1f, 1f)));
+                        break;
+                    case CustomRPC.TransportFreeze:
+                        var TPlayer1 = Utils.PlayerById(reader.ReadByte());
+                        var TPlayer2 = Utils.PlayerById(reader.ReadByte());
+                        TPlayer1.moveable = false;
+                        TPlayer2.moveable = false;
                         break;
                     case CustomRPC.RpcResetAnim:
                         var animPlayer = Utils.PlayerById(reader.ReadByte());
@@ -777,6 +876,9 @@ namespace TownOfUs
                     case CustomRPC.AddMayorVoteBank:
                         Role.GetRole<Mayor>(Utils.PlayerById(reader.ReadByte())).VoteBank += reader.ReadInt32();
                         break;
+                    case CustomRPC.SetAgent:
+                        new Agent(Utils.PlayerById(reader.ReadByte()));
+                        break;
                 }
             }
         }
@@ -847,8 +949,11 @@ namespace TownOfUs
                 if (Check(CustomGameOptions.RetributionistOn))
                     CrewmateRoles.Add((typeof(Retributionist), CustomRPC.SetRetributionist, CustomGameOptions.RetributionistOn));
 
-                // if (Check(CustomGameOptions.IllusionistOn))
-                //     CrewmateRoles.Add((typeof(Illusionist), CustomRPC.SetIllusionist, CustomGameOptions.IllusionistOn));
+                if (Check(CustomGameOptions.IllusionistOn))
+                    CrewmateRoles.Add((typeof(Illusionist), CustomRPC.SetIllusionist, CustomGameOptions.IllusionistOn));
+
+                if (Check(CustomGameOptions.TransporterOn))
+                    CrewmateRoles.Add((typeof(Transporter), CustomRPC.SetTransporter, CustomGameOptions.TransporterOn));
                 #endregion
                 #region Neutral Roles
                 if (Check(CustomGameOptions.JesterOn))
@@ -865,6 +970,9 @@ namespace TownOfUs
 
                 if (Check(CustomGameOptions.ExecutionerOn))
                     NeutralRoles.Add((typeof(Executioner), CustomRPC.SetExecutioner, CustomGameOptions.ExecutionerOn));
+
+                if (Check(CustomGameOptions.AgentOn))
+                    NeutralRoles.Add((typeof(Agent), CustomRPC.SetAgent, CustomGameOptions.AgentOn));
                 #endregion
                 #region Impostor Roles
                 if (Check(CustomGameOptions.UndertakerOn))

@@ -39,7 +39,9 @@ namespace TownOfUs
         public static int RetributionistOn => (int)Generate.RetributionistOn.Get();
         public static int HaunterOn => (int)Generate.HaunterOn.Get();
         public static int GrenadierOn => (int)Generate.GrenadierOn.Get();
-        // public static int IllusionistOn => (int)Generate.IllusionistOn.Get();
+        public static int IllusionistOn => (int)Generate.IllusionistOn.Get();
+        public static int TransporterOn => (int)Generate.TransporterOn.Get();
+        public static int AgentOn => (int)Generate.AgentOn.Get();
         public static int TorchOn => (int)Generate.TorchOn.Get();
         public static int DiseasedOn => (int)Generate.DiseasedOn.Get();
         public static int FlashOn => (int)Generate.FlashOn.Get();
@@ -58,6 +60,7 @@ namespace TownOfUs
         public static bool SheriffKillOther => Generate.SheriffKillOther.Get();
         public static bool SheriffKillsJester => Generate.SheriffKillsJester.Get();
         public static bool SheriffKillsGlitch => Generate.SheriffKillsGlitch.Get();
+        public static bool SheriffKillsAgent => Generate.SheriffKillsAgent.Get();
         public static bool SheriffKillsExecutioner => Generate.SheriffKillsExecutioner.Get();
         public static bool SheriffKillsArsonist => Generate.SheriffKillsArsonist.Get();
         public static float SheriffKillCd => Generate.SheriffKillCd.Get();
@@ -150,5 +153,14 @@ namespace TownOfUs
         public static float GrenadeCd => Generate.GrenadeCooldown.Get();
         public static float GrenadeDuration => Generate.GrenadeDuration.Get();
         public static bool GrenadierVent => Generate.GrenadierVent.Get();
+        public static float IllusionCooldown => Generate.IllusionCooldown.Get();
+        public static float IllusionDuration => Generate.IllusionDuration.Get();
+        public static bool InfiniteIllusion => Generate.InfiniteIllusion.Get();
+        public static float IllusionEndCooldown => Generate.IllusionEndCooldown.Get();
+        public static float TransportCooldown => Generate.TransportCooldown.Get();
+        public static float IntelCooldown => Generate.IntelCooldown.Get();
+        public static bool ImpHijackKill => Generate.ImpHijackKill.Get();
+        public static bool ImpHijackVent => Generate.ImpHijackVent.Get();
+        public static bool AgentGameEnd => Generate.AgentGameEnd.Get();
     }
 }

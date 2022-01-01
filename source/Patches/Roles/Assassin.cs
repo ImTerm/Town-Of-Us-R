@@ -23,7 +23,9 @@ namespace TownOfUs.Roles
             { "Seer", new Color(1f, 0.8f, 0.5f, 1f) },
             { "Spy", new Color(0.8f, 0.64f, 0.8f, 1f) },
             { "Altruist", new Color(0.4f, 0f, 0f, 1f) },
-            { "Retributionist", new Color(0.8f, 1f, 0f, 1f) }
+            { "Retributionist", new Color(1f, 1f, 0.7f, 1f) },
+            { "Illusionist", new Color(0.8f, 0.3f, 1f, 1f) },
+            { "Transporter", new Color(0f, 0.93f, 1f, 1f) }
         };
 
         public Dictionary<byte, string> Guesses = new Dictionary<byte, string>();
@@ -49,9 +51,10 @@ namespace TownOfUs.Roles
             {
                 ColorMapping.Add("Jester", new Color(1f, 0.75f, 0.8f, 1f));
                 ColorMapping.Add("Shifter", new Color(0.6f, 0.6f, 0.6f, 1f));
-                ColorMapping.Add("Executioner", new Color(0.55f, 0.25f, 0.02f, 1f));
                 ColorMapping.Add("The Glitch", Color.green);
+                ColorMapping.Add("Executioner", new Color(0.55f, 0.25f, 0.02f, 1f));
                 ColorMapping.Add("Arsonist", new Color(1f, 0.3f, 0f));
+                ColorMapping.Add("The Agent", new Color(0.2f, 0.2f, 0.2f));
             }
 
             if (CustomGameOptions.AssassinCrewmateGuess) ColorMapping.Add("Crewmate", Color.white);

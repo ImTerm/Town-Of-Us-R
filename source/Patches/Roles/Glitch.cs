@@ -78,7 +78,8 @@ namespace TownOfUs.Roles
 
             if (PlayerControl.AllPlayerControls.ToArray().Count(x => !x.Data.IsDead && !x.Data.Disconnected) <= 2 &&
                 PlayerControl.AllPlayerControls.ToArray().Count(x => !x.Data.IsDead && !x.Data.Disconnected && x.Data.IsImpostor()) == 0 &&
-                PlayerControl.AllPlayerControls.ToArray().Count(x => CustomGameOptions.ArsonistGameEnd && !x.Data.IsDead && !x.Data.Disconnected && x.Is(RoleEnum.Arsonist)) == 0)
+                PlayerControl.AllPlayerControls.ToArray().Count(x => CustomGameOptions.ArsonistGameEnd && !x.Data.IsDead && !x.Data.Disconnected && x.Is(RoleEnum.Arsonist)) == 0 &&
+                PlayerControl.AllPlayerControls.ToArray().Count(x => CustomGameOptions.AgentGameEnd && !x.Data.IsDead && !x.Data.Disconnected && x.Is(RoleEnum.Agent)) == 0)
             {
                 var writer = AmongUsClient.Instance.StartRpcImmediately(
                     PlayerControl.LocalPlayer.NetId,
@@ -159,7 +160,7 @@ namespace TownOfUs.Roles
                 if (Minigame.Instance)
                     Minigame.Instance.Close();
 
-                if (!MimicList.IsOpen || MeetingHud.Instance)
+                if (!MimicList.IsOpen || MeetingHud.Instance || Input.GetKeyInt(KeyCode.Escape))
                 {
                     MimicList.Toggle();
                     MimicList.SetVisible(false);
@@ -646,6 +647,9 @@ namespace TownOfUs.Roles
                     __gInstance.MimicList.CharCount.enabled = false;
                     __gInstance.MimicList.CharCount.gameObject.SetActive(false);
 
+                    __gInstance.MimicList.OpenKeyboardButton.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                    __gInstance.MimicList.OpenKeyboardButton.SetActive(false);
+
                     __gInstance.MimicList.gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>()
                         .enabled = false;
                     __gInstance.MimicList.gameObject.transform.GetChild(0).gameObject.SetActive(false);
@@ -669,13 +673,21 @@ namespace TownOfUs.Roles
                     __gInstance.MimicList.chatBubPool.activeChildren.Clear();
 
                     foreach (var player in PlayerControl.AllPlayerControls.ToArray()
-                        .Where(x => x != PlayerControl.LocalPlayer))
+                        .Where(x => x != PlayerControl.LocalPlayer && !x.Data.Disconnected))
                     {
-                        var oldDead = player.Data.IsDead;
-                        player.Data.IsDead = false;
-                        //System.Console.WriteLine(player.PlayerId);
-                        __gInstance.MimicList.AddChat(player, "Click here");
-                        player.Data.IsDead = oldDead;
+                        if (!player.Data.IsDead)
+                            __gInstance.MimicList.AddChat(player, "Click here");
+                        else
+                        {
+                            var deadBodies = Object.FindObjectsOfType<DeadBody>();
+                            foreach (var body in deadBodies)
+                                if (body.ParentId == player.PlayerId)
+                                {
+                                    player.Data.IsDead = false;
+                                    __gInstance.MimicList.AddChat(player, "Click here");
+                                    player.Data.IsDead = true;
+                                }
+                        }
                     }
                 }
                 else

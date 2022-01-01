@@ -33,7 +33,7 @@ namespace TownOfUs.Roles
             Name = "Retributionist";
             ImpostorText = () => "Kill impostors during meetings if you can guess their roles";
             TaskText = () => "Guess the roles of impostors mid-meeting to kill them!";
-            Color = new Color(0.8f, 1f, 0f, 1f);
+            Color = new Color(1f, 1f, 0.6f, 1f);
             RoleType = RoleEnum.Retributionist;
 
             RemainingKills = CustomGameOptions.RetributionistKills;
@@ -42,9 +42,10 @@ namespace TownOfUs.Roles
             {
                 ColorMapping.Add("Jester", new Color(1f, 0.75f, 0.8f, 1f));
                 ColorMapping.Add("Shifter", new Color(0.6f, 0.6f, 0.6f, 1f));
-                ColorMapping.Add("Executioner", new Color(0.55f, 0.25f, 0.02f, 1f));
                 ColorMapping.Add("The Glitch", Color.green);
+                ColorMapping.Add("Executioner", new Color(0.55f, 0.25f, 0.02f, 1f));
                 ColorMapping.Add("Arsonist", new Color(1f, 0.3f, 0f));
+                ColorMapping.Add("The Agent", new Color(0.2f, 0.2f, 0.2f));
             }
         }
 

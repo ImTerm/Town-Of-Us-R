@@ -23,7 +23,7 @@ namespace TownOfUs.NeutralRoles.ArsonistMod
                     role.DousedPlayers.Remove(targetId);
                     continue;
                 }
-                if (role.DousedPlayers.Contains(targetId)) state.NameText.color = Color.black;
+                if (role.DousedPlayers.Contains(targetId) && !PlayerControl.LocalPlayer.Data.IsDead) state.NameText.color = Color.black;
             }
         }
     }

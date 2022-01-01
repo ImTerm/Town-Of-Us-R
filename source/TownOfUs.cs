@@ -19,7 +19,7 @@ using UnityEngine.SceneManagement;
 
 namespace TownOfUs
 {
-    [BepInPlugin(Id, "Town Of Us", "2.4.1")]
+    [BepInPlugin(Id, "Town Of Us", "2.4.2")]
     [BepInDependency(ReactorPlugin.Id)]
     public class TownOfUs : BasePlugin
     {
@@ -53,6 +53,9 @@ namespace TownOfUs
         public static Sprite DragSprite;
         public static Sprite DropSprite;
         public static Sprite FlashSprite;
+        public static Sprite IllusionSprite;
+        public static Sprite EndIllusionSprite;
+        public static Sprite TransportSprite;
         public static Sprite SettingsButtonSprite;
 
         public static Vector3 ButtonPosition { get; private set; } = new Vector3(2.6f, 0.7f, -9f);
@@ -102,6 +105,9 @@ namespace TownOfUs
             CycleSprite = CreateSprite("TownOfUs.Resources.Cycle.png");
             GuessSprite = CreateSprite("TownOfUs.Resources.Guess.png");
             FlashSprite = CreateSprite("TownOfUs.Resources.Flash.png");
+            IllusionSprite = CreateSprite("TownOfUs.Resources.Illusion.png");
+            EndIllusionSprite = CreateSprite("TownOfUs.Resources.EndIllusion.png");
+            TransportSprite = CreateSprite("TownOfUs.Resources.Transport.png");
             SettingsButtonSprite = CreateSprite("TownOfUs.Resources.SettingsButton.png");
 
             PalettePatch.Load();

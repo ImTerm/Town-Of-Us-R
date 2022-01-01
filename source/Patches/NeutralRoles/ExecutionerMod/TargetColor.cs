@@ -40,11 +40,12 @@ namespace TownOfUs.NeutralRoles.ExecutionerMod
                 return;
             }
 
+            if (PlayerControl.LocalPlayer.Data.IsDead) return;
+            
             if (MeetingHud.Instance != null) UpdateMeeting(MeetingHud.Instance, role);
 
             role.target.nameText.color = Color.black;
 
-            if (PlayerControl.LocalPlayer.Data.IsDead) return;
             if (!role.target.Data.IsDead && !role.target.Data.Disconnected) return;
             if (role.TargetVotedOut) return;
 
