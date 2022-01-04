@@ -1,9 +1,0 @@
-Change how lovers spawn
-Implement agent
-Fix menu bugs with transporter
-Rework illusionist
-Modifier for seeing vote colors
-Role ideas:
-Enforcer - Will never be blocked when killing. Cannot be killed by crewmate killing roles.
-Nullifier - Can remove a player's role/its abilities for a round.
-Necromancer - Can create zombies from dead bodies that can kill players.
