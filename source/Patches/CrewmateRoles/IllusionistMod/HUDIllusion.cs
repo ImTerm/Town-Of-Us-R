@@ -26,17 +26,9 @@ namespace TownOfUs.CrewmateRoles.IllusionistMod
             illusionButton.gameObject.SetActive(!data.IsDead && !MeetingHud.Instance);
 
             if (!role.IsUsingIllusion)
-                // || (role.IsUsingIllusion && CustomGameOptions.IllusionEndCooldown >= CustomGameOptions.IllusionDuration && !CustomGameOptions.InfiniteIllusion))
-            {
                 illusionButton.SetCoolDown(role.IllusionTimer(), CustomGameOptions.IllusionCooldown);
-            }
-            else {
-                if (CustomGameOptions.InfiniteIllusion)
-                    illusionButton.SetCoolDown(0f, CustomGameOptions.IllusionDuration);
-                else
-                    illusionButton.SetCoolDown(role.TimeRemaining,
-                        CustomGameOptions.IllusionDuration);
-            }
+            else
+                illusionButton.SetCoolDown(role.EndIllusionTimer(), CustomGameOptions.IllusionEndCooldown);
             // else if (role.IsUsingIllusion && (CustomGameOptions.IllusionEndCooldown < CustomGameOptions.IllusionDuration || CustomGameOptions.InfiniteIllusion))
             // {
             //     illusionButton.SetCoolDown(role.EndIllusionTimer(), CustomGameOptions.IllusionEndCooldown);
@@ -52,22 +44,7 @@ namespace TownOfUs.CrewmateRoles.IllusionistMod
 
             renderer.color = Palette.DisabledClear;
             renderer.material.SetFloat("_Desat", 1f);
-
-            if (role.EndIllusionButton != null) {
-                
-                role.EndIllusionButton.SetCoolDown(role.EndIllusionTimer(), CustomGameOptions.IllusionEndCooldown);
-
-                var renderer2 = role.EndIllusionButton.graphic;
-                if (!illusionButton.isCoolingDown)
-                {
-                    renderer2.color = Palette.EnabledColor;
-                    renderer2.material.SetFloat("_Desat", 0f);
-                    return;
-                }
-
-                renderer2.color = Palette.DisabledClear;
-                renderer2.material.SetFloat("_Desat", 1f);
-            }
+            
         }
     }
 }

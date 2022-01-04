@@ -70,9 +70,9 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption VanillaGame;
         public static CustomNumberOption InitialCooldowns;
         public static CustomNumberOption GlitchShieldUntilKills;
-        public static CustomToggleOption GlitchShieldReveal;
+        public static CustomStringOption GlitchShieldReveal;
         public static CustomNumberOption ImpShieldUntilKills;
-        public static CustomToggleOption ImpShieldReveal;
+        public static CustomStringOption ImpShieldReveal;
 
         public static CustomHeaderOption Mayor;
         public static CustomNumberOption MayorVoteBank;
@@ -136,8 +136,6 @@ namespace TownOfUs.CustomOption
 
         public static CustomHeaderOption Illusionist;
         public static CustomNumberOption IllusionCooldown;
-        public static CustomNumberOption IllusionDuration;
-        public static CustomToggleOption InfiniteIllusion;
         public static CustomNumberOption IllusionEndCooldown;
 
         public static CustomHeaderOption Transporter;
@@ -356,11 +354,11 @@ namespace TownOfUs.CustomOption
             GlitchShieldUntilKills =
                 new CustomNumberOption(num++, "Glitch Protected From Imp Until Glitch Kills #", 0, 0, 5, 1);
             GlitchShieldReveal =
-                new CustomToggleOption(num++, "Glitch Revealed After Attempt", false);
+                new CustomStringOption(num++, "Revealed After Attempt On Glitch", new[] { "Neither", "Glitch", "Both"});
             ImpShieldUntilKills =
                 new CustomNumberOption(num++, "Imp Protected From Glitch Until Imp Kills #", 0, 0, 5, 1);
             ImpShieldReveal =
-                new CustomToggleOption(num++, "Imp Revealed After Attempt", false);
+                new CustomStringOption(num++, "Revealed After Attempt On Imp", new[] { "Neither", "Imp", "Both"});
 
             Mayor =
                 new CustomHeaderOption(num++, "<color=#704FA8FF>Mayor</color>");
@@ -387,12 +385,12 @@ namespace TownOfUs.CustomOption
                 new CustomToggleOption(num++, "Sheriff Kills Jester", false);
             SheriffKillsGlitch =
                 new CustomToggleOption(num++, "Sheriff Kills The Glitch", false);
-            SheriffKillsAgent =
-                new CustomToggleOption(num++, "Sheriff Kills The Agent", false);
             SheriffKillsExecutioner =
                 new CustomToggleOption(num++, "Sheriff Kills Executioner", false);
             SheriffKillsArsonist =
                 new CustomToggleOption(num++, "Sheriff Kills Arsonist", false);
+            SheriffKillsAgent =
+                new CustomToggleOption(num++, "Sheriff Kills The Agent", false);
 
             SheriffKillCd =
                 new CustomNumberOption(num++, "Sheriff Kill Cooldown", 25f, 10f, 40f, 2.5f, CooldownFormat);
@@ -490,18 +488,14 @@ namespace TownOfUs.CustomOption
             Illusionist =
                 new CustomHeaderOption(num++, "<color=#BB4DFFFF>Illusionist</color>");
             IllusionCooldown =
-                 new CustomNumberOption(num++, "Illusion Cooldown", 20f, 0f, 60f, 2.5f);
-            IllusionDuration =
-                 new CustomNumberOption(num++, "Illusion Duration", 10f, 0f, 60f, 1f);
-            InfiniteIllusion =
-                 new CustomToggleOption(num++, "Infinite Illusion Duration", false);
+                 new CustomNumberOption(num++, "Illusion Cooldown", 20f, 0f, 60f, 2.5f, CooldownFormat);
             IllusionEndCooldown =
-                 new CustomNumberOption(num++, "Illusion End Cooldown", 10f, 0f, 60f, 1f);
+                 new CustomNumberOption(num++, "Illusion End Cooldown", 10f, 0f, 60f, 1f, CooldownFormat);
 
             Transporter =
                 new CustomHeaderOption(num++, "<color=#00EEFFFF>Transporter</color>");
             TransportCooldown =
-                 new CustomNumberOption(num++, "Transport Cooldown", 20f, 10f, 60f, 2.5f);
+                 new CustomNumberOption(num++, "Transport Cooldown", 20f, 10f, 60f, 2.5f, CooldownFormat);
 
             Haunter =
                 new CustomHeaderOption(num++, "<color=#d3d3d3FF>Haunter</color>");

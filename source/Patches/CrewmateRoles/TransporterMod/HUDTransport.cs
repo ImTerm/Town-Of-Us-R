@@ -14,12 +14,12 @@ namespace TownOfUs.CrewmateRoles.TransporterMod
             if (PlayerControl.LocalPlayer.Data == null) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Transporter)) return;
             var data = PlayerControl.LocalPlayer.Data;
-            if (data.IsDead) return;
             var transportButton = DestroyableSingleton<HudManager>.Instance.KillButton;
 
             var role = Role.GetRole<Transporter>(PlayerControl.LocalPlayer);
 
-            transportButton.gameObject.SetActive(!MeetingHud.Instance);
+            transportButton.gameObject.SetActive(!MeetingHud.Instance && !data.IsDead);
+            if (data.IsDead) return;
 
             transportButton.SetCoolDown(role.TransportTimer(), CustomGameOptions.TransportCooldown);
 

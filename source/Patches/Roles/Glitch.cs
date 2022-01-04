@@ -69,7 +69,7 @@ namespace TownOfUs.Roles
         internal override bool Criteria()
         {
             return Role.GetRole(PlayerControl.LocalPlayer).ProtectRevealed.Contains(Player.PlayerId) && PlayerControl.LocalPlayer.Data.IsImpostor() &&
-                CustomGameOptions.GlitchShieldReveal || base.Criteria();
+                (CustomGameOptions.GlitchShieldReveal == GlitchProtectRevealEnum.Glitch || CustomGameOptions.GlitchShieldReveal == GlitchProtectRevealEnum.Both) || base.Criteria();
         }
 
         internal override bool EABBNOODFGL(ShipStatus __instance)
@@ -501,12 +501,21 @@ namespace TownOfUs.Roles
                         !Role.GetRole<Glitch>(PlayerControl.LocalPlayer).ProtectRevealed.Contains(__gInstance.KillTarget.PlayerId))
                     {
 
-                        if (CustomGameOptions.ImpShieldReveal)
+                        if (CustomGameOptions.ImpShieldReveal == ImpProtectRevealEnum.Imp ||
+                            CustomGameOptions.ImpShieldReveal == ImpProtectRevealEnum.Both)
                             Coroutines.Start(Utils.FlashCoroutine(Palette.ImpostorRed));
                         else if (CustomGameOptions.MedicOn >= 1 && CustomGameOptions.NotificationShield == NotificationOptions.Everyone)
                             Coroutines.Start(Utils.FlashCoroutine(new Color(0f, 0.5f, 0f, 1f)));
 
                         __gInstance.ProtectRevealed.Add(__gInstance.KillTarget.PlayerId);
+                        if (CustomGameOptions.ImpShieldReveal == ImpProtectRevealEnum.Both)
+                        {
+                            var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId,
+                                (byte)CustomRPC.GlitchProtectReveal, SendOption.Reliable, -1);
+                            writer.Write(__gInstance.KillTarget.PlayerId);
+                            writer.Write(PlayerControl.LocalPlayer.PlayerId);
+                            AmongUsClient.Instance.FinishRpcImmediately(writer); 
+                        }
 
                         __gInstance.LastKill = DateTime.UtcNow;
 

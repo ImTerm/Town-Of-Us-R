@@ -130,6 +130,8 @@ namespace TownOfUs.NeutralRoles.ShifterMod
                 case RoleEnum.Snitch:
                 case RoleEnum.Altruist:
                 case RoleEnum.Retributionist:
+                case RoleEnum.Illusionist:
+                case RoleEnum.Transporter:
                 case RoleEnum.Crewmate:
 
                     shift = true;
@@ -140,6 +142,7 @@ namespace TownOfUs.NeutralRoles.ShifterMod
                 case RoleEnum.Executioner:
                 case RoleEnum.Arsonist:
                 case RoleEnum.Shifter:
+                case RoleEnum.Agent:
                     
                     if (CustomGameOptions.WhoShifts == ShiftEnum.NonImps)
                     {

@@ -88,16 +88,25 @@ Join our [Discord](https://discord.gg/ugyc4EVUYZ) if you have any problems or wa
 <details>
   <summary> Changelog </summary>
   <details>
-  <summary> v2.4.2 </summary>
+  <summary> v2.4.2-tdev2</summary>
+  <ul> <li>Reworked Illusionist. Now it can select a player, including itself, and make the player mimic another player. This can be for any amount of time, but there is a cooldown on the button to end the illusion.</li> </ul>
+  <ul> <li>Fixed a lot of bugs with the Transporter.</li> </ul>
+  <ul> <li>Fixed an issue with the Illusionist and Transporter not being able to be shifted into.</li> </ul>
+  <ul> <li>Fixed an issue where using the Illusion button caused immense lag.</li> </ul>
+  </details>
+  <details>
+  <summary> v2.4.2-tdev1</summary>
   <ul> <li>New Role: Illusionist (Crewmate with glitch mimic, and it swaps appearances with the target)</li> </ul>
   <ul> <li>New Role: Transporter (Can choose two players and swap their locations)</li> </ul>
   <ul> <li>Added Jester can vent setting</li> </ul>
   <ul> <li>Added a setting where you can keep the Glitch protected from the Impostors and vice-versa until the target kills a number of players</li> </ul>
   <ul> <li>You can now hit the Esc key to exit the player selection menu for the Glitch Mimic as well as with Illusion and Transport</li> </ul>
+  <ul> <li>The player selection menu for the Glitch Mimic, Illusion and Transport no longer show dead players (excluding players that have died the current round, no free vitals)</li> </ul>
   <ul> <li>The Arsonist's doused players and the Executioner's target no longer show up black while dead (for readability)</li> </ul>
   <ul> <li>Changed the color for the Retributionist to look less similar to the Sheriff</li> </ul>
   <ul> <li>The Glitch now wins if there is one player alive and it is a Crewmate, like Impostors</li> </ul>
   <ul> <li>Bug Fix: The in-lobby Tab to show all setting feature now toggles properly (finally!)</li> </ul>
+  <ul> <li>Minor bug fixes</li> </ul>
   </details>
   <details>
   <summary> v2.4.1 </summary>

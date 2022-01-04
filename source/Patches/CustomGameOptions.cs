@@ -52,9 +52,9 @@ namespace TownOfUs
         public static int VanillaGame => (int)Generate.VanillaGame.Get();
         public static float InitialCooldowns => Generate.InitialCooldowns.Get();
         public static int GlitchShieldUntilKills => (int)Generate.GlitchShieldUntilKills.Get();
-        public static bool GlitchShieldReveal => Generate.GlitchShieldReveal.Get();
+        public static GlitchProtectRevealEnum GlitchShieldReveal => (GlitchProtectRevealEnum) Generate.GlitchShieldReveal.Get();
         public static int ImpShieldUntilKills => (int)Generate.ImpShieldUntilKills.Get();
-        public static bool ImpShieldReveal => Generate.ImpShieldReveal.Get();
+        public static ImpProtectRevealEnum ImpShieldReveal => (ImpProtectRevealEnum) Generate.ImpShieldReveal.Get();
         public static bool BothLoversDie => Generate.BothLoversDie.Get();
         public static bool ShowSheriff => Generate.ShowSheriff.Get();
         public static bool SheriffKillOther => Generate.SheriffKillOther.Get();
@@ -154,8 +154,6 @@ namespace TownOfUs
         public static float GrenadeDuration => Generate.GrenadeDuration.Get();
         public static bool GrenadierVent => Generate.GrenadierVent.Get();
         public static float IllusionCooldown => Generate.IllusionCooldown.Get();
-        public static float IllusionDuration => Generate.IllusionDuration.Get();
-        public static bool InfiniteIllusion => Generate.InfiniteIllusion.Get();
         public static float IllusionEndCooldown => Generate.IllusionEndCooldown.Get();
         public static float TransportCooldown => Generate.TransportCooldown.Get();
         public static float IntelCooldown => Generate.IntelCooldown.Get();

@@ -515,33 +515,36 @@ namespace TownOfUs
                         glitchRole.IsUsingMimic = true;
                         Utils.Morph(glitchPlayer, mimicPlayer);
                         break;
-                    case CustomRPC.SetIllusion:
-                        var illusionistPlayer = Utils.PlayerById(reader.ReadByte());
-                        var otherIllusionPlayer = Utils.PlayerById(reader.ReadByte());
-                        var illusionistRole = Role.GetRole<Illusionist>(illusionistPlayer);
-                        illusionistRole.IllusionTarget = otherIllusionPlayer;
-                        illusionistRole.IsUsingIllusion = true;
-                        Utils.Morph(illusionistPlayer, otherIllusionPlayer);
-                        Utils.Morph(otherIllusionPlayer, illusionistPlayer);
-                        if (PlayerControl.LocalPlayer == otherIllusionPlayer)
-                            Coroutines.Start(Utils.FlashCoroutine(illusionistRole.Color));
+                    case CustomRPC.StartIllusion:
+                        var illusionPlayerStart = Utils.PlayerById(reader.ReadByte());
+                        var illusionAsStart = Utils.PlayerById(reader.ReadByte());
+                        var illusionistStart = Role.GetRole<Illusionist>(Utils.PlayerById(reader.ReadByte()));
+                        Role.GetRole(illusionPlayerStart).IllusionTarget = illusionAsStart;
+                        Utils.Morph(illusionPlayerStart, illusionAsStart);
+                        if (PlayerControl.LocalPlayer.PlayerId == illusionPlayerStart.PlayerId)
+                            Coroutines.Start(Utils.FlashCoroutine(illusionistStart.Color));
+                        break;
+                    case CustomRPC.UpdateIllusion:
+                        var illusionPlayerUpdate = Utils.PlayerById(reader.ReadByte());
+                        var illusionAsUpdate = Utils.PlayerById(reader.ReadByte());
+                        Utils.Morph(illusionPlayerUpdate, illusionAsUpdate);
                         break;
                     case CustomRPC.EndIllusion:
-                        var illusionist = Utils.PlayerById(reader.ReadByte());
-                        var otherIllusion = Utils.PlayerById(reader.ReadByte());
-                        var theIllusionistRole = Role.GetRole<Illusionist>(illusionist);
-                        theIllusionistRole.IllusionTarget = null;
-                        theIllusionistRole.IsUsingIllusion = false;
-                        Utils.Unmorph(illusionist);
-                        Utils.Unmorph(otherIllusion);
-                        if (PlayerControl.LocalPlayer == otherIllusion)
-                            Coroutines.Start(Utils.FlashCoroutine(theIllusionistRole.Color));
+                        var illusionPlayerEnd = Utils.PlayerById(reader.ReadByte());
+                        var illusionAsEnd = Utils.PlayerById(reader.ReadByte());
+                        var illusionistEnd = Role.GetRole<Illusionist>(Utils.PlayerById(reader.ReadByte()));
+                        Role.GetRole(illusionPlayerEnd).IllusionTarget = null;
+                        Utils.Unmorph(illusionPlayerEnd);
+                        if (PlayerControl.LocalPlayer.PlayerId == illusionPlayerEnd.PlayerId)
+                            Coroutines.Start(Utils.FlashCoroutine(illusionistEnd.Color));
                         break;
                     case CustomRPC.TransportPlayers:
                         var TransportPlayer1 = Utils.PlayerById(reader.ReadByte());
                         var TransportPlayer2 = Utils.PlayerById(reader.ReadByte());
                         // TransportPlayer1.moveable = true;
                         // TransportPlayer2.moveable = true;
+                        // TransportPlayer1.NetTransform.Halt();
+                        // TransportPlayer2.NetTransform.Halt();
                         var allDeadBodies = UnityEngine.Object.FindObjectsOfType<DeadBody>();
                         DeadBody Player1Body = null;
                         DeadBody Player2Body = null;
@@ -553,6 +556,17 @@ namespace TownOfUs
                             foreach (var body in allDeadBodies)
                                 if (body.ParentId == TransportPlayer2.PlayerId)
                                     Player2Body = body;
+
+                        if (TransportPlayer1.inVent)
+                        {
+                            TransportPlayer1.MyPhysics.RpcExitVent(Vent.currentVent.Id);
+                            TransportPlayer1.MyPhysics.ExitAllVents();
+                        }
+                        if (TransportPlayer2.inVent)
+                        {
+                            TransportPlayer2.MyPhysics.RpcExitVent(Vent.currentVent.Id);
+                            TransportPlayer2.MyPhysics.ExitAllVents();
+                        }
 
                         if (Player1Body == null && Player2Body == null)
                         {
@@ -582,26 +596,43 @@ namespace TownOfUs
                             Player2Body.transform.position = TempPosition;
                         }
 
-                        if (TransportPlayer1.inVent)
-                        {
-                            TransportPlayer1.MyPhysics.RpcExitVent(Vent.currentVent.Id);
-                            TransportPlayer1.MyPhysics.ExitAllVents();
-                        }
-                        if (TransportPlayer2.inVent)
-                        {
-                            TransportPlayer2.MyPhysics.RpcExitVent(Vent.currentVent.Id);
-                            TransportPlayer2.MyPhysics.ExitAllVents();
-                        }
-
                         if (PlayerControl.LocalPlayer.PlayerId == TransportPlayer1.PlayerId ||
                             PlayerControl.LocalPlayer.PlayerId == TransportPlayer2.PlayerId)
                             Coroutines.Start(Utils.FlashCoroutine(new Color(0f, 0.93f, 1f, 1f)));
                         break;
-                    case CustomRPC.TransportFreeze:
-                        var TPlayer1 = Utils.PlayerById(reader.ReadByte());
-                        var TPlayer2 = Utils.PlayerById(reader.ReadByte());
-                        TPlayer1.moveable = false;
-                        TPlayer2.moveable = false;
+                    // case CustomRPC.TransportFreeze:
+                    //     var TPlayer1 = Utils.PlayerById(reader.ReadByte());
+                    //     var TPlayer2 = Utils.PlayerById(reader.ReadByte());
+                    //     TPlayer1.moveable = false;
+                    //     TPlayer2.moveable = false;
+                    //     TPlayer1.NetTransform.Halt();
+                    //     TPlayer2.NetTransform.Halt();
+                    //     break;
+                    case CustomRPC.GlitchProtectReveal:
+                        var imp_1 = Role.GetRole(Utils.PlayerById(reader.ReadByte()));
+                        var glitch_2 = Role.GetRole(Utils.PlayerById(reader.ReadByte()));
+                        imp_1.ProtectRevealed.Add(glitch_2.Player.PlayerId);
+                        if (PlayerControl.LocalPlayer.Data.IsImpostor())
+                        {
+                            if (CustomGameOptions.GlitchShieldReveal == GlitchProtectRevealEnum.Glitch ||
+                                CustomGameOptions.GlitchShieldReveal == GlitchProtectRevealEnum.Both)
+                                Coroutines.Start(Utils.FlashCoroutine(Color.green));
+                            else if (CustomGameOptions.MedicOn >= 1 && CustomGameOptions.NotificationShield == NotificationOptions.Everyone)
+                                Coroutines.Start(Utils.FlashCoroutine(new Color(0f, 0.5f, 0f, 1f)));
+                        }
+                        break;
+                    case CustomRPC.ImpProtectReveal:
+                        var glitch_1 = Role.GetRole(Utils.PlayerById(reader.ReadByte()));
+                        var imp_2 = Role.GetRole(Utils.PlayerById(reader.ReadByte()));
+                        glitch_1.ProtectRevealed.Add(imp_2.Player.PlayerId);
+                        if (PlayerControl.LocalPlayer.Is(RoleEnum.Glitch))
+                        {
+                            if (CustomGameOptions.ImpShieldReveal == ImpProtectRevealEnum.Imp ||
+                                CustomGameOptions.ImpShieldReveal == ImpProtectRevealEnum.Both)
+                                Coroutines.Start(Utils.FlashCoroutine(Palette.ImpostorRed));
+                            else if (CustomGameOptions.MedicOn >= 1 && CustomGameOptions.NotificationShield == NotificationOptions.Everyone)
+                                Coroutines.Start(Utils.FlashCoroutine(new Color(0f, 0.5f, 0f, 1f)));
+                        }
                         break;
                     case CustomRPC.RpcResetAnim:
                         var animPlayer = Utils.PlayerById(reader.ReadByte());

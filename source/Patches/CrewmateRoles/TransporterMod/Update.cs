@@ -16,7 +16,6 @@ namespace TownOfUs.CrewmateRoles.TransporterMod
             if (PlayerControl.LocalPlayer.Data == null) return;
             if (!PlayerControl.LocalPlayer.Is(RoleEnum.Transporter)) return;
             var role = Role.GetRole<Transporter>(PlayerControl.LocalPlayer);
-            
             if (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started)
                 if (role != null)
                     if (PlayerControl.LocalPlayer.Is(RoleEnum.Transporter))
