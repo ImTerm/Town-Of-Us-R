@@ -70,7 +70,7 @@ namespace TownOfUs.Roles
                 {
                     Faction.Crewmates => Color.green,
                     Faction.Impostors => Color.red,
-                    Faction.Neutral => CustomGameOptions.NeutralRed ? Color.red : Color.grey,
+                    Faction.Neutral => Color.grey,
                     _ => Color.white
                 };
             }

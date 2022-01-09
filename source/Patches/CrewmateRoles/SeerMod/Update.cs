@@ -60,9 +60,14 @@ namespace TownOfUs.CrewmateRoles.SeerMod
                             break;
                         default:
                             var role = Role.GetRole(player);
-                            state.NameText.color = CustomGameOptions.SeerInfo == SeerInfo.Faction
-                                ? role.FactionColor
-                                : role.Color;
+                            if (CustomGameOptions.NeutralRed)
+                                state.NameText.color = CustomGameOptions.SeerInfo == SeerInfo.Faction
+                                    ? Color.red
+                                    : role.Color;
+                            else
+                                state.NameText.color = CustomGameOptions.SeerInfo == SeerInfo.Faction
+                                    ? role.FactionColor
+                                    : role.Color;
                             state.NameText.text = NameText(player,
                                 CustomGameOptions.SeerInfo == SeerInfo.Role ? $" ({role.Name})" : "", true);
                             break;
@@ -116,9 +121,14 @@ namespace TownOfUs.CrewmateRoles.SeerMod
                         break;
                     default:
                         var role = Role.GetRole(player);
-                        player.nameText.color = CustomGameOptions.SeerInfo == SeerInfo.Faction
-                            ? role.FactionColor
-                            : role.Color;
+                        if (CustomGameOptions.NeutralRed)
+                            player.nameText.color = CustomGameOptions.SeerInfo == SeerInfo.Faction
+                                ? Color.red
+                                : role.Color;
+                        else
+                            player.nameText.color = CustomGameOptions.SeerInfo == SeerInfo.Faction
+                                ? role.FactionColor
+                                : role.Color;
                         player.nameText.text = NameText(player,
                             CustomGameOptions.SeerInfo == SeerInfo.Role ? $" ({role.Name})" : "");
                         break;

@@ -1,10 +1,9 @@
 using System;
-using System.Collections;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Hazel;
 using Reactor;
-using TownOfUs.Extensions;
+using System.Linq;
 
 namespace TownOfUs.Roles
 {
@@ -106,38 +105,53 @@ namespace TownOfUs.Roles
 
                 TransportList1.chatBubPool.activeChildren.Clear();
 
-                foreach (var player in PlayerControl.AllPlayerControls)
-                    if (!player.Data.Disconnected)
+                foreach (var TempPlayer in PlayerControl.AllPlayerControls)
+                    if (!TempPlayer.Data.IsDead && !TempPlayer.Data.Disconnected && TempPlayer.PlayerId != PlayerControl.LocalPlayer.PlayerId)
                     {
-                        if (!player.Data.IsDead)
-                        {
-                            if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                        foreach (var player in PlayerControl.AllPlayerControls)
+                            if (!player.Data.Disconnected || Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId).ParentId == player.PlayerId)
                             {
-                                foreach (var TempPlayer1 in PlayerControl.AllPlayerControls)
-                                    if (!TempPlayer1.Data.IsDead && !TempPlayer1.Data.Disconnected && TempPlayer1.PlayerId != player.PlayerId)
-                                    {
-                                        TransportList1.AddChat(TempPlayer1, "Click here");
-                                        TransportList1.chatBubPool.activeChildren[TransportList1.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetName(player.Data.PlayerName, false, false, Color);
-                                        TransportList1.chatBubPool.activeChildren[TransportList1.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetCosmetics(player.Data);
-                                        // Object.Destroy(BubblePlayer);
-                                        break;
-                                    }
+                                TransportList1.AddChat(TempPlayer, "Click here");
+                                TransportList1.chatBubPool.activeChildren[TransportList1.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetName(player.Data.PlayerName, false, false,
+                                    PlayerControl.LocalPlayer.PlayerId == player.PlayerId ? Color : Color.white);
+                                var IsDeadTemp = player.Data.IsDead;
+                                player.Data.IsDead = false;
+                                TransportList1.chatBubPool.activeChildren[TransportList1.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetCosmetics(player.Data);
+                                player.Data.IsDead = IsDeadTemp;
                             }
-                            else
-                                TransportList1.AddChat(player, "Click here");
-                        }
-                        else
-                        {
-                            var deadBodies = Object.FindObjectsOfType<DeadBody>();
-                            foreach (var body in deadBodies)
-                                if (body.ParentId == player.PlayerId)
-                                {
-                                    player.Data.IsDead = false;
-                                    TransportList1.AddChat(player, "Click here");
-                                    player.Data.IsDead = true;
-                                }
-                        }
+                        break;
                     }
+                // foreach (var player in PlayerControl.AllPlayerControls)
+                //     if (!player.Data.Disconnected)
+                //     {
+                //         if (!player.Data.IsDead)
+                //         {
+                //             if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                //             {
+                //                 foreach (var TempPlayer1 in PlayerControl.AllPlayerControls)
+                //                     if (!TempPlayer1.Data.IsDead && !TempPlayer1.Data.Disconnected && TempPlayer1.PlayerId != player.PlayerId)
+                //                     {
+                //                         TransportList1.AddChat(TempPlayer1, "Click here");
+                //                         TransportList1.chatBubPool.activeChildren[TransportList1.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetName(player.Data.PlayerName, false, false, Color);
+                //                         TransportList1.chatBubPool.activeChildren[TransportList1.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetCosmetics(player.Data);
+                //                         break;
+                //                     }
+                //             }
+                //             else
+                //                 TransportList1.AddChat(player, "Click here");
+                //         }
+                //         else
+                //         {
+                //             var deadBodies = Object.FindObjectsOfType<DeadBody>();
+                //             foreach (var body in deadBodies)
+                //                 if (body.ParentId == player.PlayerId)
+                //                 {
+                //                     player.Data.IsDead = false;
+                //                     TransportList1.AddChat(player, "Click here");
+                //                     player.Data.IsDead = true;
+                //                 }
+                //         }
+                //     }
             }
             if (TransportList1 != null)
             {
@@ -245,45 +259,23 @@ namespace TownOfUs.Roles
 
                 TransportList2.chatBubPool.activeChildren.Clear();
 
-                foreach (var player in PlayerControl.AllPlayerControls)
-                    if (TransportPlayer1.PlayerId != player.PlayerId && !player.Data.Disconnected)
+                foreach (var TempPlayer in PlayerControl.AllPlayerControls)
+                    if (!TempPlayer.Data.IsDead && !TempPlayer.Data.Disconnected && TempPlayer.PlayerId != PlayerControl.LocalPlayer.PlayerId)
                     {
-                        if (!player.Data.IsDead)
-                        {
-                            if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                        foreach (var player in PlayerControl.AllPlayerControls)
+                            if (!player.Data.Disconnected || Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId).ParentId == player.PlayerId)
                             {
-                                foreach (var TempPlayer2 in PlayerControl.AllPlayerControls)
-                                    if (!TempPlayer2.Data.IsDead && !TempPlayer2.Data.Disconnected && TempPlayer2.PlayerId != player.PlayerId)
-                                    {
-                                        // var BubblePlayer = Object.Instantiate(TempPlayer);
-                                        // var TempOutfit = BubblePlayer.Data.DefaultOutfit;
-                                        // var TempName = BubblePlayer.Data.PlayerName;
-                                        // BubblePlayer.Data.SetOutfit(PlayerOutfitType.Default, player.Data.DefaultOutfit);
-                                        // BubblePlayer.Data.PlayerName = player.Data.PlayerName + " (You)";
-                                        TransportList2.AddChat(TempPlayer2, "Click here");
-                                        TransportList2.chatBubPool.activeChildren[TransportList2.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetName(player.Data.PlayerName, false, false, Color);
-                                        TransportList2.chatBubPool.activeChildren[TransportList2.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetCosmetics(player.Data);
-                                        // Object.Destroy(BubblePlayer);
-                                        break;
-                                    }
+                                TransportList2.AddChat(TempPlayer, "Click here");
+                                TransportList2.chatBubPool.activeChildren[TransportList2.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetName(player.Data.PlayerName, false, false,
+                                    PlayerControl.LocalPlayer.PlayerId == player.PlayerId ? Color : Color.white);
+                                var IsDeadTemp = player.Data.IsDead;
+                                player.Data.IsDead = false;
+                                TransportList2.chatBubPool.activeChildren[TransportList2.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetCosmetics(player.Data);
+                                player.Data.IsDead = IsDeadTemp;
                             }
-                            else
-                                TransportList2.AddChat(player, "Click here");
-                        }
-                        else
-                        {
-                            var deadBodies = Object.FindObjectsOfType<DeadBody>();
-                            foreach (var body in deadBodies)
-                                if (body.ParentId == player.PlayerId)
-                                {
-                                    player.Data.IsDead = false;
-                                    TransportList2.AddChat(player, "Click here");
-                                    player.Data.IsDead = true;
-                                }
-                        }
+                        break;
                     }
             }
-            
             if (TransportList2 != null)
             {
                 if (Minigame.Instance)
@@ -349,9 +341,9 @@ namespace TownOfUs.Roles
 
                                                 if (Player1Body == null && Player2Body == null)
                                                 {
-                                                    var TempPosition = TransportPlayer1.transform.position;
+                                                    var TempPosition = TransportPlayer1.GetTruePosition();
                                                     var TempFacing = TransportPlayer1.myRend.flipX;
-                                                    TransportPlayer1.NetTransform.SnapTo(TransportPlayer2.transform.position);
+                                                    TransportPlayer1.NetTransform.SnapTo(TransportPlayer2.GetTruePosition());
                                                     TransportPlayer1.myRend.flipX = TransportPlayer2.myRend.flipX;
                                                     TransportPlayer1.MyPhysics.ResetMoveState();
                                                     TransportPlayer2.NetTransform.SnapTo(TempPosition);
@@ -361,12 +353,12 @@ namespace TownOfUs.Roles
                                                 if (Player1Body != null && Player2Body == null)
                                                 {
                                                     var TempPosition = Player1Body.transform.position;
-                                                    Player1Body.transform.position = TransportPlayer2.transform.position;
+                                                    Player1Body.transform.position = TransportPlayer2.GetTruePosition();
                                                     TransportPlayer2.NetTransform.SnapTo(TempPosition);
                                                 }
                                                 if (Player1Body == null && Player2Body != null)
                                                 {
-                                                    var TempPosition = TransportPlayer1.transform.position;
+                                                    var TempPosition = TransportPlayer1.GetTruePosition();
                                                     TransportPlayer1.NetTransform.SnapTo(Player2Body.transform.position);
                                                     Player2Body.transform.position = TempPosition;
                                                 }

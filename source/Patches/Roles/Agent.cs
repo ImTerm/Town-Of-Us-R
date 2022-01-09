@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Hazel;
+using TownOfUs.NeutralRoles.AgentMod;
 using TownOfUs.Extensions;
 using UnityEngine;
 
@@ -15,7 +16,6 @@ namespace TownOfUs.Roles
         public PlayerControl ClosestPlayer;
         public List<byte> IntelPlayers = new List<byte>();
         public DateTime LastIntel;
-
 
         public Agent(PlayerControl player) : base(player)
         {
@@ -72,20 +72,25 @@ namespace TownOfUs.Roles
             LostByRPC = true;
         }
 
-        public bool CheckEveryoneDoused()
+        public bool AreCrewmatesHijacked()
         {
-            var arsoId = Player.PlayerId;
-            foreach (var player in PlayerControl.AllPlayerControls)
-            {
-                if (
-                    player.PlayerId == arsoId ||
-                    player.Data.IsDead ||
-                    player.Data.Disconnected
-                ) continue;
-                if (!IntelPlayers.Contains(player.PlayerId)) return false;
-            }
+            if (!MeetingHud.Instance) return false;
+            return PlayerControl.AllPlayerControls.ToArray().Count(x => Role.GetRole(x).Faction == Faction.Crewmates && !x.Data.IsDead && !x.Data.Disconnected && IntelPlayers.Contains(x.PlayerId))
+                == PlayerControl.AllPlayerControls.ToArray().Count(x => Role.GetRole(x).Faction == Faction.Crewmates && !x.Data.IsDead && !x.Data.Disconnected);
+        }
 
-            return true;
+        public bool AreNeutralsHijacked()
+        {
+            if (!MeetingHud.Instance) return false;
+            return PlayerControl.AllPlayerControls.ToArray().Count(x => Role.GetRole(x).Faction == Faction.Neutral && !x.Data.IsDead && !x.Data.Disconnected && IntelPlayers.Contains(x.PlayerId))
+                == PlayerControl.AllPlayerControls.ToArray().Count(x => Role.GetRole(x).Faction == Faction.Neutral && !x.Data.IsDead && !x.Data.Disconnected);
+        }
+
+        public bool AreImpostorsHijacked()
+        {
+            if (!MeetingHud.Instance) return false;
+            return PlayerControl.AllPlayerControls.ToArray().Count(x => Role.GetRole(x).Faction == Faction.Impostors && !x.Data.IsDead && !x.Data.Disconnected && IntelPlayers.Contains(x.PlayerId))
+                == PlayerControl.AllPlayerControls.ToArray().Count(x => Role.GetRole(x).Faction == Faction.Impostors && !x.Data.IsDead && !x.Data.Disconnected);
         }
 
         protected override void IntroPrefix(IntroCutscene._CoBegin_d__18 __instance)

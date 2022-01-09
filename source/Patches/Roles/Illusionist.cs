@@ -33,8 +33,8 @@ namespace TownOfUs.Roles
         public Illusionist(PlayerControl player) : base(player)
         {
             Name = "Illusionist";
-            ImpostorText = () => "Change players' appearances to confuse impostors";
-            TaskText = () => "Change players' appearances to confuse impostors";
+            ImpostorText = () => "Change players' appearance to impostors";
+            TaskText = () => "Change players' appearance to impostors";
             Color = new Color(0.8f, 0.3f, 1f, 1f);
             RoleType = RoleEnum.Illusionist;
             Scale = 1.4f;
@@ -82,7 +82,7 @@ namespace TownOfUs.Roles
             //         if (bubble.Cast<ChatBubble>().NameText != null &&
             //             Player.Data.PlayerName == bubble.Cast<ChatBubble>().NameText.text)
             //             bubble.Cast<ChatBubble>().NameText.color = Color;
-            if (IsUsingIllusion && IllusionPlayer1 != null && !IllusionPlayer1.Data.Disconnected && !IllusionPlayer1.Data.IsDead)
+            if (IsUsingIllusion && IllusionPlayer1 != null && !IllusionPlayer1.Data.Disconnected && !IllusionPlayer1.Data.IsDead && !Player.Data.IsDead)
             {
                 Utils.Morph(IllusionPlayer1, IllusionPlayer2);
 
@@ -98,12 +98,15 @@ namespace TownOfUs.Roles
 
         public void FixedUpdate(HudManager __instance)
         {
-            if (!IsUsingIllusion && IllusionPlayer1 != null && IllusionPlayer2 != null)
+            if ((!IsUsingIllusion || Player.Data.IsDead || IllusionPlayer1.Data.IsDead || IllusionPlayer1.Data.Disconnected) && IllusionPlayer1 != null && IllusionPlayer2 != null)
             {
-                LastIllusioned = DateTime.UtcNow;
+                if (!Player.Data.IsDead)
+                {
+                    LastIllusioned = DateTime.UtcNow;
 
-                if (IllusionPlayer1 == PlayerControl.LocalPlayer)
-                    Coroutines.Start(Utils.FlashCoroutine(Color));
+                    if (IllusionPlayer1 == PlayerControl.LocalPlayer)
+                        Coroutines.Start(Utils.FlashCoroutine(Color));
+                }
 
                 Utils.Unmorph(IllusionPlayer1);
                 
@@ -163,37 +166,21 @@ namespace TownOfUs.Roles
 
                 IllusionList1.chatBubPool.activeChildren.Clear();
 
-                foreach (var player in PlayerControl.AllPlayerControls)
-                    if (!player.Data.Disconnected)
+                foreach (var TempPlayer in PlayerControl.AllPlayerControls)
+                    if (!TempPlayer.Data.IsDead && !TempPlayer.Data.Disconnected && TempPlayer.PlayerId != PlayerControl.LocalPlayer.PlayerId)
                     {
-                        if (!player.Data.IsDead)
-                        {
-                            if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                        foreach (var player in PlayerControl.AllPlayerControls)
+                            if (!player.Data.Disconnected || Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId).ParentId == player.PlayerId)
                             {
-                                foreach (var TempPlayer1 in PlayerControl.AllPlayerControls)
-                                    if (!TempPlayer1.Data.IsDead && !TempPlayer1.Data.Disconnected && TempPlayer1.PlayerId != player.PlayerId)
-                                    {
-                                        IllusionList1.AddChat(TempPlayer1, "Click here");
-                                        IllusionList1.chatBubPool.activeChildren[IllusionList1.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetName(player.Data.PlayerName, false, false, Color);
-                                        IllusionList1.chatBubPool.activeChildren[IllusionList1.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetCosmetics(player.Data);
-                                        // Object.Destroy(BubblePlayer);
-                                        break;
-                                    }
+                                IllusionList1.AddChat(TempPlayer, "Click here");
+                                IllusionList1.chatBubPool.activeChildren[IllusionList1.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetName(player.Data.PlayerName, false, false,
+                                    PlayerControl.LocalPlayer.PlayerId == player.PlayerId ? Color : Color.white);
+                                var IsDeadTemp = player.Data.IsDead;
+                                player.Data.IsDead = false;
+                                IllusionList1.chatBubPool.activeChildren[IllusionList1.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetCosmetics(player.Data);
+                                player.Data.IsDead = IsDeadTemp;
                             }
-                            else
-                                IllusionList1.AddChat(player, "Click here");
-                        }
-                        else
-                        {
-                            var deadBodies = Object.FindObjectsOfType<DeadBody>();
-                            foreach (var body in deadBodies)
-                                if (body.ParentId == player.PlayerId)
-                                {
-                                    player.Data.IsDead = false;
-                                    IllusionList1.AddChat(player, "Click here");
-                                    player.Data.IsDead = true;
-                                }
-                        }
+                        break;
                     }
             }
             if (IllusionList1 != null)
@@ -302,42 +289,21 @@ namespace TownOfUs.Roles
 
                 IllusionList2.chatBubPool.activeChildren.Clear();
 
-                foreach (var player in PlayerControl.AllPlayerControls)
-                    if (IllusionPlayer1.PlayerId != player.PlayerId && !player.Data.Disconnected)
+                foreach (var TempPlayer in PlayerControl.AllPlayerControls)
+                    if (!TempPlayer.Data.IsDead && !TempPlayer.Data.Disconnected && TempPlayer.PlayerId != PlayerControl.LocalPlayer.PlayerId)
                     {
-                        if (!player.Data.IsDead)
-                        {
-                            if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
+                        foreach (var player in PlayerControl.AllPlayerControls)
+                            if (!player.Data.Disconnected || Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId).ParentId == player.PlayerId)
                             {
-                                foreach (var TempPlayer2 in PlayerControl.AllPlayerControls)
-                                    if (!TempPlayer2.Data.IsDead && !TempPlayer2.Data.Disconnected && TempPlayer2.PlayerId != player.PlayerId)
-                                    {
-                                        // var BubblePlayer = Object.Instantiate(TempPlayer);
-                                        // var TempOutfit = BubblePlayer.Data.DefaultOutfit;
-                                        // var TempName = BubblePlayer.Data.PlayerName;
-                                        // BubblePlayer.Data.SetOutfit(PlayerOutfitType.Default, player.Data.DefaultOutfit);
-                                        // BubblePlayer.Data.PlayerName = player.Data.PlayerName + " (You)";
-                                        IllusionList2.AddChat(TempPlayer2, "Click here");
-                                        IllusionList2.chatBubPool.activeChildren[IllusionList2.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetName(player.Data.PlayerName, false, false, Color);
-                                        IllusionList2.chatBubPool.activeChildren[IllusionList2.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetCosmetics(player.Data);
-                                        // Object.Destroy(BubblePlayer);
-                                        break;
-                                    }
+                                IllusionList2.AddChat(TempPlayer, "Click here");
+                                IllusionList2.chatBubPool.activeChildren[IllusionList2.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetName(player.Data.PlayerName, false, false,
+                                    PlayerControl.LocalPlayer.PlayerId == player.PlayerId ? Color : Color.white);
+                                var IsDeadTemp = player.Data.IsDead;
+                                player.Data.IsDead = false;
+                                IllusionList2.chatBubPool.activeChildren[IllusionList2.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetCosmetics(player.Data);
+                                player.Data.IsDead = IsDeadTemp;
                             }
-                            else
-                                IllusionList2.AddChat(player, "Click here");
-                        }
-                        else
-                        {
-                            var deadBodies = Object.FindObjectsOfType<DeadBody>();
-                            foreach (var body in deadBodies)
-                                if (body.ParentId == player.PlayerId)
-                                {
-                                    player.Data.IsDead = false;
-                                    IllusionList2.AddChat(player, "Click here");
-                                    player.Data.IsDead = true;
-                                }
-                        }
+                        break;
                     }
             }
             

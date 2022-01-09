@@ -81,6 +81,7 @@ namespace TownOfUs
         EndIllusion,
         TransportPlayers,
         // TransportFreeze,
+        Intel,
         Morph,
         Camouflage,
         Mine,

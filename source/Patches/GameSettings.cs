@@ -89,7 +89,7 @@ namespace TownOfUs
                 __result = builder.ToString();
 
 
-                if (CustomOption.CustomOption.LobbyTextScroller && __result.Count(c => c == '\n') > 38)
+                if (CustomOption.CustomOption.LobbyTextScroller && AllOptions)
                     __result = __result.Insert(__result.IndexOf('\n'), " (Scroll for more)");
                 else __result = __result.Insert(__result.IndexOf('\n'), "Press Tab to see All Options");
 

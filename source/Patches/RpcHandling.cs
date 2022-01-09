@@ -11,6 +11,7 @@ using TownOfUs.CrewmateRoles.InvestigatorMod;
 using TownOfUs.CrewmateRoles.SwapperMod;
 using TownOfUs.CrewmateRoles.TimeLordMod;
 using TownOfUs.CrewmateRoles.RetributionistMod;
+using TownOfUs.CrewmateRoles.IllusionistMod;
 using TownOfUs.CustomOption;
 using TownOfUs.Extensions;
 using TownOfUs.ImpostorRoles.AssassinMod;
@@ -520,22 +521,31 @@ namespace TownOfUs
                         var illusionAsStart = Utils.PlayerById(reader.ReadByte());
                         var illusionistStart = Role.GetRole<Illusionist>(Utils.PlayerById(reader.ReadByte()));
                         Role.GetRole(illusionPlayerStart).IllusionTarget = illusionAsStart;
-                        Utils.Morph(illusionPlayerStart, illusionAsStart);
-                        if (PlayerControl.LocalPlayer.PlayerId == illusionPlayerStart.PlayerId)
+                        if ((Role.GetRole(PlayerControl.LocalPlayer).Faction == Faction.Crewmates && CustomGameOptions.IllusionAppearance == IllusionAppearance.Everyone) ||
+                            (Role.GetRole(PlayerControl.LocalPlayer).Faction == Faction.Neutral && CustomGameOptions.IllusionAppearance != IllusionAppearance.Imps) ||
+                            Role.GetRole(PlayerControl.LocalPlayer).Faction == Faction.Impostors)
+                            Utils.Morph(illusionPlayerStart, illusionAsStart);
+                        if (PlayerControl.LocalPlayer.PlayerId == illusionPlayerStart.PlayerId && !PlayerControl.LocalPlayer.Data.IsDead)
                             Coroutines.Start(Utils.FlashCoroutine(illusionistStart.Color));
                         break;
                     case CustomRPC.UpdateIllusion:
                         var illusionPlayerUpdate = Utils.PlayerById(reader.ReadByte());
                         var illusionAsUpdate = Utils.PlayerById(reader.ReadByte());
-                        Utils.Morph(illusionPlayerUpdate, illusionAsUpdate);
+                        if ((Role.GetRole(PlayerControl.LocalPlayer).Faction == Faction.Crewmates && CustomGameOptions.IllusionAppearance == IllusionAppearance.Everyone) ||
+                            (Role.GetRole(PlayerControl.LocalPlayer).Faction == Faction.Neutral && CustomGameOptions.IllusionAppearance != IllusionAppearance.Imps) ||
+                            Role.GetRole(PlayerControl.LocalPlayer).Faction == Faction.Impostors)
+                            Utils.Morph(illusionPlayerUpdate, illusionAsUpdate);
                         break;
                     case CustomRPC.EndIllusion:
                         var illusionPlayerEnd = Utils.PlayerById(reader.ReadByte());
                         var illusionAsEnd = Utils.PlayerById(reader.ReadByte());
                         var illusionistEnd = Role.GetRole<Illusionist>(Utils.PlayerById(reader.ReadByte()));
                         Role.GetRole(illusionPlayerEnd).IllusionTarget = null;
-                        Utils.Unmorph(illusionPlayerEnd);
-                        if (PlayerControl.LocalPlayer.PlayerId == illusionPlayerEnd.PlayerId)
+                        if ((Role.GetRole(PlayerControl.LocalPlayer).Faction == Faction.Crewmates && CustomGameOptions.IllusionAppearance == IllusionAppearance.Everyone) ||
+                            (Role.GetRole(PlayerControl.LocalPlayer).Faction == Faction.Neutral && CustomGameOptions.IllusionAppearance != IllusionAppearance.Imps) ||
+                            Role.GetRole(PlayerControl.LocalPlayer).Faction == Faction.Impostors)
+                            Utils.Unmorph(illusionPlayerEnd);
+                        if (PlayerControl.LocalPlayer.PlayerId == illusionPlayerEnd.PlayerId && !PlayerControl.LocalPlayer.Data.IsDead)
                             Coroutines.Start(Utils.FlashCoroutine(illusionistEnd.Color));
                         break;
                     case CustomRPC.TransportPlayers:
@@ -570,22 +580,24 @@ namespace TownOfUs
 
                         if (Player1Body == null && Player2Body == null)
                         {
-                            var TempPosition = TransportPlayer1.transform.position;
+                            var TempPosition = TransportPlayer1.GetTruePosition();
                             var TempFacing = TransportPlayer1.myRend.flipX;
-                            TransportPlayer1.NetTransform.SnapTo(TransportPlayer2.transform.position);
+                            TransportPlayer1.NetTransform.SnapTo(TransportPlayer2.GetTruePosition());
                             TransportPlayer1.myRend.flipX = TransportPlayer2.myRend.flipX;
+                            TransportPlayer1.MyPhysics.ResetMoveState();
                             TransportPlayer2.NetTransform.SnapTo(TempPosition);
                             TransportPlayer2.myRend.flipX = TempFacing;
+                            TransportPlayer2.MyPhysics.ResetMoveState();
                         }
                         if (Player1Body != null && Player2Body == null)
                         {
                             var TempPosition = Player1Body.transform.position;
-                            Player1Body.transform.position = TransportPlayer2.transform.position;
+                            Player1Body.transform.position = TransportPlayer2.GetTruePosition();
                             TransportPlayer2.NetTransform.SnapTo(TempPosition);
                         }
                         if (Player1Body == null && Player2Body != null)
                         {
-                            var TempPosition = TransportPlayer1.transform.position;
+                            var TempPosition = TransportPlayer1.GetTruePosition();
                             TransportPlayer1.NetTransform.SnapTo(Player2Body.transform.position);
                             Player2Body.transform.position = TempPosition;
                         }
@@ -633,6 +645,12 @@ namespace TownOfUs
                             else if (CustomGameOptions.MedicOn >= 1 && CustomGameOptions.NotificationShield == NotificationOptions.Everyone)
                                 Coroutines.Start(Utils.FlashCoroutine(new Color(0f, 0.5f, 0f, 1f)));
                         }
+                        break;
+                    case CustomRPC.Intel:
+                        var agent = Utils.PlayerById(reader.ReadByte());
+                        var intelPlayer = Utils.PlayerById(reader.ReadByte());
+                        Role.GetRole<Agent>(agent).IntelPlayers.Add(intelPlayer.PlayerId);
+                        Role.GetRole<Agent>(agent).LastIntel = DateTime.UtcNow;
                         break;
                     case CustomRPC.RpcResetAnim:
                         var animPlayer = Utils.PlayerById(reader.ReadByte());

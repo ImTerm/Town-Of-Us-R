@@ -137,9 +137,13 @@ namespace TownOfUs.CustomOption
         public static CustomHeaderOption Illusionist;
         public static CustomNumberOption IllusionCooldown;
         public static CustomNumberOption IllusionEndCooldown;
+        public static CustomStringOption IllusionAppearance;
+        public static CustomToggleOption ImpIllusion;
+        public static CustomToggleOption IllusionedImpKill;
 
         public static CustomHeaderOption Transporter;
         public static CustomNumberOption TransportCooldown;
+        public static CustomToggleOption TransporterVitals;
 
         public static CustomHeaderOption Jester;
         public static CustomToggleOption JesterButton;
@@ -169,6 +173,7 @@ namespace TownOfUs.CustomOption
 
         public static CustomHeaderOption Agent;
         public static CustomNumberOption IntelCooldown;
+        public static CustomStringOption IntelInfo;
         public static CustomToggleOption ImpHijackKill;
         public static CustomToggleOption ImpHijackVent;
         public static CustomToggleOption AgentGameEnd;
@@ -491,11 +496,19 @@ namespace TownOfUs.CustomOption
                  new CustomNumberOption(num++, "Illusion Cooldown", 20f, 0f, 60f, 2.5f, CooldownFormat);
             IllusionEndCooldown =
                  new CustomNumberOption(num++, "Illusion End Cooldown", 10f, 0f, 60f, 1f, CooldownFormat);
+            IllusionAppearance =
+                 new CustomStringOption(num++, "Illusion Appears To", new[] { "Everyone", "Non-Crew", "Imps Only" });
+            ImpIllusion =
+                 new CustomToggleOption(num++, "Illusioned Impostors Are Unknown To Teamates", true);
+            IllusionedImpKill = 
+                 new CustomToggleOption(num++, "Illusioned Impostors Can Be Killed By Their Teamate", true);
 
             Transporter =
                 new CustomHeaderOption(num++, "<color=#00EEFFFF>Transporter</color>");
             TransportCooldown =
                  new CustomNumberOption(num++, "Transport Cooldown", 20f, 10f, 60f, 2.5f, CooldownFormat);
+            TransporterVitals =
+                new CustomToggleOption(num++, "Transporter Can Use Vitals", false);
 
             Haunter =
                 new CustomHeaderOption(num++, "<color=#d3d3d3FF>Haunter</color>");
@@ -557,7 +570,9 @@ namespace TownOfUs.CustomOption
             Agent =
                 new CustomHeaderOption(num++, "<color=#333333FF>The Agent</color>");
             IntelCooldown =
-                 new CustomNumberOption(num++, "Intel Cooldown", 30f, 10f, 60f, 2.5f, CooldownFormat);
+                new CustomNumberOption(num++, "Intel Cooldown", 30f, 10f, 60f, 2.5f, CooldownFormat);
+            IntelInfo =
+                new CustomStringOption(num++, "Info That The Agent Sees", new[] { "Role", "Team" });
             ImpHijackKill =
                 new CustomToggleOption(num++, "The Agent Can Kill While Imps Hijacked", false);
             ImpHijackVent =

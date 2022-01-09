@@ -1,9 +1,11 @@
 using TownOfUs.CrewmateRoles.EngineerMod;
 using TownOfUs.CrewmateRoles.MedicMod;
 using TownOfUs.CrewmateRoles.SeerMod;
+using TownOfUs.CrewmateRoles.IllusionistMod;
 using TownOfUs.CustomOption;
 using TownOfUs.NeutralRoles.ExecutionerMod;
 using TownOfUs.NeutralRoles.ShifterMod;
+using TownOfUs.NeutralRoles.AgentMod;
 using TownOfUs.CrewmateRoles.HaunterMod;
 
 namespace TownOfUs
@@ -155,8 +157,13 @@ namespace TownOfUs
         public static bool GrenadierVent => Generate.GrenadierVent.Get();
         public static float IllusionCooldown => Generate.IllusionCooldown.Get();
         public static float IllusionEndCooldown => Generate.IllusionEndCooldown.Get();
+        public static IllusionAppearance IllusionAppearance => (IllusionAppearance)Generate.IllusionAppearance.Get();
+        public static bool ImpIllusion => Generate.ImpIllusion.Get();
+        public static bool IllusionedImpKill => Generate.IllusionedImpKill.Get();
         public static float TransportCooldown => Generate.TransportCooldown.Get();
+        public static bool TransporterVitals => Generate.TransporterVitals.Get();
         public static float IntelCooldown => Generate.IntelCooldown.Get();
+        public static IntelInfo IntelInfo => (IntelInfo)Generate.IntelInfo.Get();
         public static bool ImpHijackKill => Generate.ImpHijackKill.Get();
         public static bool ImpHijackVent => Generate.ImpHijackVent.Get();
         public static bool AgentGameEnd => Generate.AgentGameEnd.Get();

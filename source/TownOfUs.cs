@@ -56,6 +56,7 @@ namespace TownOfUs
         public static Sprite IllusionSprite;
         public static Sprite EndIllusionSprite;
         public static Sprite TransportSprite;
+        public static Sprite IntelSprite;
         public static Sprite SettingsButtonSprite;
 
         public static Vector3 ButtonPosition { get; private set; } = new Vector3(2.6f, 0.7f, -9f);
@@ -108,6 +109,7 @@ namespace TownOfUs
             IllusionSprite = CreateSprite("TownOfUs.Resources.Illusion.png");
             EndIllusionSprite = CreateSprite("TownOfUs.Resources.EndIllusion.png");
             TransportSprite = CreateSprite("TownOfUs.Resources.Transport.png");
+            IntelSprite = CreateSprite("TownOfUs.Resources.Intel.png");
             SettingsButtonSprite = CreateSprite("TownOfUs.Resources.SettingsButton.png");
 
             PalettePatch.Load();

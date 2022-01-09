@@ -88,8 +88,17 @@ Join our [Discord](https://discord.gg/ugyc4EVUYZ) if you have any problems or wa
 <details>
   <summary> Changelog </summary>
   <details>
+  <summary> v2.4.2-tdev3</summary>
+  <ul> <li>You can now choose to have the Illusionist's Illusions show to only impostors, impostors and neutrals, or everyone.</li> </ul>
+  <ul> <li>Added settings for if an impostor who is illusioned will be seen as an impostor still, and whether they can be targeted for a kill.</li> </ul>
+  <ul> <li>Added a setting for whether the Transporter can use Vitals.</li> </ul>
+  <ul> <li>Now if the Illusionist dies or the Illusionist's target dies the illusion ends.</li> </ul>
+  <ul> <li>NOTE: I will be doing more testing with the Illusionist, but I'm not certain this role will stay in my dev version in future updates. Reason being, so far I have not felt that it has performed well as a crew supporting role (mostly just confusing and unhelpful for crew). I believe if an Illusionist's illusions aren't shown to crewmates it should fix these issues, but if I believe that is not the case through testing in this update, it may be removed.</li> </ul>
+  </details>
+  <details>
   <summary> v2.4.2-tdev2</summary>
   <ul> <li>Reworked Illusionist. Now it can select a player, including itself, and make the player mimic another player. This can be for any amount of time, but there is a cooldown on the button to end the illusion.</li> </ul>
+  <ul> <li>You may now choose to reveal both the Impostor and the Glitch to each other upon protection from a kill.</li> </ul>
   <ul> <li>Fixed a lot of bugs with the Transporter.</li> </ul>
   <ul> <li>Fixed an issue with the Illusionist and Transporter not being able to be shifted into.</li> </ul>
   <ul> <li>Fixed an issue where using the Illusion button caused immense lag.</li> </ul>
