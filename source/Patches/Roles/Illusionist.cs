@@ -174,6 +174,7 @@ namespace TownOfUs.Roles
                         TempPlayer.PlayerId != PlayerControl.LocalPlayer.PlayerId)
                     {
                         foreach (var player in PlayerControl.AllPlayerControls)
+                        {
                             if (player != null &&
                                 player.Data != null &&
                                 (!player.Data.Disconnected && !player.Data.IsDead) ||
@@ -187,6 +188,7 @@ namespace TownOfUs.Roles
                                 IllusionList1.chatBubPool.activeChildren[IllusionList1.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetCosmetics(player.Data);
                                 player.Data.IsDead = IsDeadTemp;
                             }
+                        }
                         break;
                     }
             }
