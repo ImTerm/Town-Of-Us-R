@@ -116,8 +116,8 @@ namespace TownOfUs.Roles
                         {
                             if (player != null &&
                                 player.Data != null &&
-                                (!player.Data.Disconnected && !player.Data.IsDead) ||
-                                Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId).ParentId == player.PlayerId)
+                                ((!player.Data.Disconnected && !player.Data.IsDead) ||
+                                Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId).ParentId == player.PlayerId))
                             {
                                 TransportList1.AddChat(TempPlayer, "Click here");
                                 TransportList1.chatBubPool.activeChildren[TransportList1.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetName(player.Data.PlayerName, false, false,
