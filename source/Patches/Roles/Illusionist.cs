@@ -167,10 +167,17 @@ namespace TownOfUs.Roles
                 IllusionList1.chatBubPool.activeChildren.Clear();
 
                 foreach (var TempPlayer in PlayerControl.AllPlayerControls)
-                    if (!TempPlayer.Data.IsDead && !TempPlayer.Data.Disconnected && TempPlayer.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                    if (TempPlayer != null &&
+                        TempPlayer.Data != null &&
+                        !TempPlayer.Data.IsDead &&
+                        !TempPlayer.Data.Disconnected &&
+                        TempPlayer.PlayerId != PlayerControl.LocalPlayer.PlayerId)
                     {
                         foreach (var player in PlayerControl.AllPlayerControls)
-                            if (!player.Data.Disconnected || Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId).ParentId == player.PlayerId)
+                            if (player != null &&
+                                player.Data != null &&
+                                (!player.Data.Disconnected && !player.Data.IsDead) ||
+                                Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId).ParentId == player.PlayerId)
                             {
                                 IllusionList1.AddChat(TempPlayer, "Click here");
                                 IllusionList1.chatBubPool.activeChildren[IllusionList1.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetName(player.Data.PlayerName, false, false,
@@ -290,10 +297,18 @@ namespace TownOfUs.Roles
                 IllusionList2.chatBubPool.activeChildren.Clear();
 
                 foreach (var TempPlayer in PlayerControl.AllPlayerControls)
-                    if (!TempPlayer.Data.IsDead && !TempPlayer.Data.Disconnected && TempPlayer.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                    if (TempPlayer != null &&
+                        TempPlayer.Data != null &&
+                        !TempPlayer.Data.IsDead &&
+                        !TempPlayer.Data.Disconnected &&
+                        TempPlayer.PlayerId != PlayerControl.LocalPlayer.PlayerId)
                     {
                         foreach (var player in PlayerControl.AllPlayerControls)
-                            if (!player.Data.Disconnected || Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId).ParentId == player.PlayerId)
+                            if (IllusionPlayer1.PlayerId != player.PlayerId &&
+                                player != null &&
+                                player.Data != null &&
+                                (!player.Data.Disconnected && !player.Data.IsDead) ||
+                                Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId).ParentId == player.PlayerId)
                             {
                                 IllusionList2.AddChat(TempPlayer, "Click here");
                                 IllusionList2.chatBubPool.activeChildren[IllusionList2.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetName(player.Data.PlayerName, false, false,

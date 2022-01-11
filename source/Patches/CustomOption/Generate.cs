@@ -501,7 +501,7 @@ namespace TownOfUs.CustomOption
             ImpIllusion =
                  new CustomToggleOption(num++, "Illusioned Impostors Are Unknown To Teamates", true);
             IllusionedImpKill = 
-                 new CustomToggleOption(num++, "Illusioned Impostors Can Be Killed By Their Teamate", true);
+                 new CustomToggleOption(num++, "Illusioned Impostors Can Be Killed By Their Teamates", true);
 
             Transporter =
                 new CustomHeaderOption(num++, "<color=#00EEFFFF>Transporter</color>");

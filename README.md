@@ -88,6 +88,10 @@ Join our [Discord](https://discord.gg/ugyc4EVUYZ) if you have any problems or wa
 <details>
   <summary> Changelog </summary>
   <details>
+  <summary> v2.4.2-tdev4</summary>
+  <ul> <li>Minor patch to fix an issue where the Transporter would transport players out of bounds (and fixed a similar existing issue with the Altruist!) as well as a few issues with the menus for Illusionist and Transporter.</li> </ul>
+  </details>
+  <details>
   <summary> v2.4.2-tdev3</summary>
   <ul> <li>You can now choose to have the Illusionist's Illusions show to only impostors, impostors and neutrals, or everyone.</li> </ul>
   <ul> <li>Added settings for if an impostor who is illusioned will be seen as an impostor still, and whether they can be targeted for a kill.</li> </ul>

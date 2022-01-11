@@ -106,10 +106,17 @@ namespace TownOfUs.Roles
                 TransportList1.chatBubPool.activeChildren.Clear();
 
                 foreach (var TempPlayer in PlayerControl.AllPlayerControls)
-                    if (!TempPlayer.Data.IsDead && !TempPlayer.Data.Disconnected && TempPlayer.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                    if (TempPlayer != null &&
+                        TempPlayer.Data != null &&
+                        !TempPlayer.Data.IsDead &&
+                        !TempPlayer.Data.Disconnected &&
+                        TempPlayer.PlayerId != PlayerControl.LocalPlayer.PlayerId)
                     {
                         foreach (var player in PlayerControl.AllPlayerControls)
-                            if (!player.Data.Disconnected || Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId).ParentId == player.PlayerId)
+                            if (player != null &&
+                                player.Data != null &&
+                                (!player.Data.Disconnected && !player.Data.IsDead) ||
+                                Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId).ParentId == player.PlayerId)
                             {
                                 TransportList1.AddChat(TempPlayer, "Click here");
                                 TransportList1.chatBubPool.activeChildren[TransportList1.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetName(player.Data.PlayerName, false, false,
@@ -121,37 +128,6 @@ namespace TownOfUs.Roles
                             }
                         break;
                     }
-                // foreach (var player in PlayerControl.AllPlayerControls)
-                //     if (!player.Data.Disconnected)
-                //     {
-                //         if (!player.Data.IsDead)
-                //         {
-                //             if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId)
-                //             {
-                //                 foreach (var TempPlayer1 in PlayerControl.AllPlayerControls)
-                //                     if (!TempPlayer1.Data.IsDead && !TempPlayer1.Data.Disconnected && TempPlayer1.PlayerId != player.PlayerId)
-                //                     {
-                //                         TransportList1.AddChat(TempPlayer1, "Click here");
-                //                         TransportList1.chatBubPool.activeChildren[TransportList1.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetName(player.Data.PlayerName, false, false, Color);
-                //                         TransportList1.chatBubPool.activeChildren[TransportList1.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetCosmetics(player.Data);
-                //                         break;
-                //                     }
-                //             }
-                //             else
-                //                 TransportList1.AddChat(player, "Click here");
-                //         }
-                //         else
-                //         {
-                //             var deadBodies = Object.FindObjectsOfType<DeadBody>();
-                //             foreach (var body in deadBodies)
-                //                 if (body.ParentId == player.PlayerId)
-                //                 {
-                //                     player.Data.IsDead = false;
-                //                     TransportList1.AddChat(player, "Click here");
-                //                     player.Data.IsDead = true;
-                //                 }
-                //         }
-                //     }
             }
             if (TransportList1 != null)
             {
@@ -260,10 +236,18 @@ namespace TownOfUs.Roles
                 TransportList2.chatBubPool.activeChildren.Clear();
 
                 foreach (var TempPlayer in PlayerControl.AllPlayerControls)
-                    if (!TempPlayer.Data.IsDead && !TempPlayer.Data.Disconnected && TempPlayer.PlayerId != PlayerControl.LocalPlayer.PlayerId)
+                    if (TempPlayer != null &&
+                        TempPlayer.Data != null &&
+                        !TempPlayer.Data.IsDead &&
+                        !TempPlayer.Data.Disconnected &&
+                        TempPlayer.PlayerId != PlayerControl.LocalPlayer.PlayerId)
                     {
                         foreach (var player in PlayerControl.AllPlayerControls)
-                            if (!player.Data.Disconnected || Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId).ParentId == player.PlayerId)
+                            if (TransportPlayer1.PlayerId != player.PlayerId &&
+                                player != null &&
+                                player.Data != null &&
+                                (!player.Data.Disconnected && !player.Data.IsDead) ||
+                                Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId).ParentId == player.PlayerId)
                             {
                                 TransportList2.AddChat(TempPlayer, "Click here");
                                 TransportList2.chatBubPool.activeChildren[TransportList2.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetName(player.Data.PlayerName, false, false,
@@ -341,31 +325,33 @@ namespace TownOfUs.Roles
 
                                                 if (Player1Body == null && Player2Body == null)
                                                 {
+                                                    TransportPlayer1.MyPhysics.ResetMoveState();
+                                                    TransportPlayer2.MyPhysics.ResetMoveState();
                                                     var TempPosition = TransportPlayer1.GetTruePosition();
                                                     var TempFacing = TransportPlayer1.myRend.flipX;
-                                                    TransportPlayer1.NetTransform.SnapTo(TransportPlayer2.GetTruePosition());
+                                                    TransportPlayer1.NetTransform.SnapTo(new Vector2(TransportPlayer2.GetTruePosition().x, TransportPlayer2.GetTruePosition().y + 0.3636f));
                                                     TransportPlayer1.myRend.flipX = TransportPlayer2.myRend.flipX;
-                                                    TransportPlayer1.MyPhysics.ResetMoveState();
-                                                    TransportPlayer2.NetTransform.SnapTo(TempPosition);
+                                                    TransportPlayer2.NetTransform.SnapTo(new Vector2(TempPosition.x, TempPosition.y + 0.3636f));
                                                     TransportPlayer2.myRend.flipX = TempFacing;
-                                                    TransportPlayer2.MyPhysics.ResetMoveState();
                                                 }
                                                 if (Player1Body != null && Player2Body == null)
                                                 {
-                                                    var TempPosition = Player1Body.transform.position;
+                                                    TransportPlayer2.MyPhysics.ResetMoveState();
+                                                    var TempPosition = Player1Body.TruePosition;
                                                     Player1Body.transform.position = TransportPlayer2.GetTruePosition();
-                                                    TransportPlayer2.NetTransform.SnapTo(TempPosition);
+                                                    TransportPlayer2.NetTransform.SnapTo(new Vector2(TempPosition.x, TempPosition.y + 0.3636f));
                                                 }
                                                 if (Player1Body == null && Player2Body != null)
                                                 {
+                                                    TransportPlayer1.MyPhysics.ResetMoveState();
                                                     var TempPosition = TransportPlayer1.GetTruePosition();
-                                                    TransportPlayer1.NetTransform.SnapTo(Player2Body.transform.position);
+                                                    TransportPlayer1.NetTransform.SnapTo(new Vector2(Player2Body.TruePosition.x, Player2Body.TruePosition.y + 0.3636f));
                                                     Player2Body.transform.position = TempPosition;
                                                 }
                                                 if (Player1Body != null && Player2Body != null)
                                                 {
-                                                    var TempPosition =  Player1Body.transform.position;
-                                                    Player1Body.transform.position = Player2Body.transform.position;
+                                                    var TempPosition =  Player1Body.TruePosition;
+                                                    Player1Body.transform.position = Player2Body.TruePosition;
                                                     Player2Body.transform.position = TempPosition;
                                                 }
                                                 

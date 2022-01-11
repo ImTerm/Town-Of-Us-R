@@ -580,25 +580,27 @@ namespace TownOfUs
 
                         if (Player1Body == null && Player2Body == null)
                         {
+                            TransportPlayer1.MyPhysics.ResetMoveState();
+                            TransportPlayer2.MyPhysics.ResetMoveState();
                             var TempPosition = TransportPlayer1.GetTruePosition();
                             var TempFacing = TransportPlayer1.myRend.flipX;
-                            TransportPlayer1.NetTransform.SnapTo(TransportPlayer2.GetTruePosition());
+                            TransportPlayer1.NetTransform.SnapTo(new Vector2(TransportPlayer2.GetTruePosition().x, TransportPlayer2.GetTruePosition().y + 0.3636f));
                             TransportPlayer1.myRend.flipX = TransportPlayer2.myRend.flipX;
-                            TransportPlayer1.MyPhysics.ResetMoveState();
-                            TransportPlayer2.NetTransform.SnapTo(TempPosition);
+                            TransportPlayer2.NetTransform.SnapTo(new Vector2(TempPosition.x, TempPosition.y + 0.3636f));
                             TransportPlayer2.myRend.flipX = TempFacing;
-                            TransportPlayer2.MyPhysics.ResetMoveState();
                         }
                         if (Player1Body != null && Player2Body == null)
                         {
-                            var TempPosition = Player1Body.transform.position;
+                            TransportPlayer2.MyPhysics.ResetMoveState();
+                            var TempPosition = Player1Body.TruePosition;
                             Player1Body.transform.position = TransportPlayer2.GetTruePosition();
-                            TransportPlayer2.NetTransform.SnapTo(TempPosition);
+                            TransportPlayer2.NetTransform.SnapTo(new Vector2(TempPosition.x, TempPosition.y + 0.3636f));
                         }
                         if (Player1Body == null && Player2Body != null)
                         {
+                            TransportPlayer1.MyPhysics.ResetMoveState();
                             var TempPosition = TransportPlayer1.GetTruePosition();
-                            TransportPlayer1.NetTransform.SnapTo(Player2Body.transform.position);
+                            TransportPlayer1.NetTransform.SnapTo(new Vector2(Player2Body.TruePosition.x, Player2Body.TruePosition.y + 0.3636f));
                             Player2Body.transform.position = TempPosition;
                         }
                         if (Player1Body != null && Player2Body != null)
