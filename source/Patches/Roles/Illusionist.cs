@@ -304,11 +304,12 @@ namespace TownOfUs.Roles
                         TempPlayer.PlayerId != PlayerControl.LocalPlayer.PlayerId)
                     {
                         foreach (var player in PlayerControl.AllPlayerControls)
-                            if (IllusionPlayer1.PlayerId != player.PlayerId &&
+                        {
+                            if (player.PlayerId != IllusionPlayer1.PlayerId &&
                                 player != null &&
                                 player.Data != null &&
-                                (!player.Data.Disconnected && !player.Data.IsDead) ||
-                                Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId).ParentId == player.PlayerId)
+                                ((!player.Data.Disconnected && !player.Data.IsDead) ||
+                                Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId).ParentId == player.PlayerId))
                             {
                                 IllusionList2.AddChat(TempPlayer, "Click here");
                                 IllusionList2.chatBubPool.activeChildren[IllusionList2.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetName(player.Data.PlayerName, false, false,
@@ -318,6 +319,7 @@ namespace TownOfUs.Roles
                                 IllusionList2.chatBubPool.activeChildren[IllusionList2.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetCosmetics(player.Data);
                                 player.Data.IsDead = IsDeadTemp;
                             }
+                        }
                         break;
                     }
             }
