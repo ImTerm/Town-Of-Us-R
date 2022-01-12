@@ -40,7 +40,7 @@ namespace TownOfUs.Roles
             IsUsingMimic = false;
             RoleType = RoleEnum.Glitch;
             ImpostorText = () => "You are the glitch";
-            TaskText = () => "Murder players as the Glitch:";
+            TaskText = () => "Murder players as the Glitch";
             Faction = Faction.Neutral;
         }
 

@@ -9,7 +9,7 @@ namespace TownOfUs.CrewmateRoles.TransporterMod
         public static bool Prefix(VitalsMinigame __instance)
         {
             if (CustomGameOptions.TransporterVitals) return true;
-            if (PlayerControl.LocalPlayer.Is(RoleEnum.Transporter))
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Transporter) && !PlayerControl.LocalPlayer.Data.IsDead)
             {
                 Object.Destroy(__instance.gameObject);
                 return false;
