@@ -88,6 +88,11 @@ Join our [Discord](https://discord.gg/ugyc4EVUYZ) if you have any problems or wa
 <details>
   <summary> Changelog </summary>
   <details>
+  <summary> v2.4.2-tdev5</summary>
+  <ul> <li>Another minor patch to hopefully finally fix all the issues with the menus for Illusionist and Transporter. Now an Illusioned Impostor's role is not seen by their teamate if the option to hide them is on.</li> </ul>
+  </details>
+  <details>
+  <details>
   <summary> v2.4.2-tdev4</summary>
   <ul> <li>Minor patch to fix an issue where the Transporter would transport players out of bounds (and fixed a similar existing issue with the Altruist!) as well as a few issues with the menus for Illusionist and Transporter.</li> </ul>
   </details>

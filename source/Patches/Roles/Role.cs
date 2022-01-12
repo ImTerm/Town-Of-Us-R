@@ -110,8 +110,8 @@ namespace TownOfUs.Roles
             );
             if (PlayerControl.LocalPlayer.Data.IsDead && CustomGameOptions.DeadSeeRoles) return Utils.ShowDeadBodies;
             if (Faction == Faction.Impostors && PlayerControl.LocalPlayer.Data.IsImpostor() &&
-                CustomGameOptions.ImpostorSeeRoles/* &&
-                GetRole(Player).IllusionTarget != null && GetRole(Player).IllusionTarget.PlayerId != PlayerControl.LocalPlayer.PlayerId*/) return true;
+                CustomGameOptions.ImpostorSeeRoles &&
+                GetRole(Player).IllusionTarget == null/* && GetRole(Player).IllusionTarget.PlayerId != PlayerControl.LocalPlayer.PlayerId*/) return true;
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Glitch) && Role.GetRole<Glitch>(PlayerControl.LocalPlayer).ProtectRevealed.Contains(Player.PlayerId) &&
                 (CustomGameOptions.ImpShieldReveal == ImpProtectRevealEnum.Imp || CustomGameOptions.ImpShieldReveal == ImpProtectRevealEnum.Both)) return true;
             return GetRole(PlayerControl.LocalPlayer) == this;

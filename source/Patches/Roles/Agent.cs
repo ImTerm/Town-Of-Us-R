@@ -12,10 +12,13 @@ namespace TownOfUs.Roles
     public class Agent : Role
     {
         private KillButton intelButton;
+        private KillButton cycleButton;
         public bool AgentWins;
         public PlayerControl ClosestPlayer;
         public List<byte> IntelPlayers = new List<byte>();
         public DateTime LastIntel;
+        public DateTime LastKill;
+        public Faction GuessMode;
 
         public Agent(PlayerControl player) : base(player)
         {
@@ -25,6 +28,7 @@ namespace TownOfUs.Roles
             Color = new Color(0.2f, 0.2f, 0.2f, 1f);
             RoleType = RoleEnum.Agent;
             Faction = Faction.Neutral;
+            GuessMode = Faction.Crewmates;
         }
 
         public KillButton IntelButton
@@ -34,6 +38,15 @@ namespace TownOfUs.Roles
             {
                 intelButton = value;
                 ExtraButtons.Clear();
+                ExtraButtons.Add(value);
+            }
+        }
+        public KillButton CycleButton
+        {
+            get => cycleButton;
+            set
+            {
+                cycleButton = value;
                 ExtraButtons.Add(value);
             }
         }
@@ -63,7 +76,6 @@ namespace TownOfUs.Roles
 
         public void Wins()
         {
-            //System.Console.WriteLine("Reached Here - Glitch Edition");
             AgentWins = true;
         }
 
@@ -105,6 +117,16 @@ namespace TownOfUs.Roles
             var utcNow = DateTime.UtcNow;
             var timeSpan = utcNow - LastIntel;
             var num = CustomGameOptions.IntelCooldown * 1000f;
+            var flag2 = num - (float) timeSpan.TotalMilliseconds < 0f;
+            if (flag2) return 0;
+            return (num - (float) timeSpan.TotalMilliseconds) / 1000f;
+        }
+        
+        public float KillTimer()
+        {
+            var utcNow = DateTime.UtcNow;
+            var timeSpan = utcNow - LastKill;
+            var num = PlayerControl.GameOptions.KillCooldown * 1000f;
             var flag2 = num - (float) timeSpan.TotalMilliseconds < 0f;
             if (flag2) return 0;
             return (num - (float) timeSpan.TotalMilliseconds) / 1000f;

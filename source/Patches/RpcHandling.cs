@@ -589,21 +589,21 @@ namespace TownOfUs
                             TransportPlayer2.NetTransform.SnapTo(new Vector2(TempPosition.x, TempPosition.y + 0.3636f));
                             TransportPlayer2.myRend.flipX = TempFacing;
                         }
-                        if (Player1Body != null && Player2Body == null)
+                        else if (Player1Body != null && Player2Body == null)
                         {
                             TransportPlayer2.MyPhysics.ResetMoveState();
                             var TempPosition = Player1Body.TruePosition;
                             Player1Body.transform.position = TransportPlayer2.GetTruePosition();
                             TransportPlayer2.NetTransform.SnapTo(new Vector2(TempPosition.x, TempPosition.y + 0.3636f));
                         }
-                        if (Player1Body == null && Player2Body != null)
+                        else if (Player1Body == null && Player2Body != null)
                         {
                             TransportPlayer1.MyPhysics.ResetMoveState();
                             var TempPosition = TransportPlayer1.GetTruePosition();
                             TransportPlayer1.NetTransform.SnapTo(new Vector2(Player2Body.TruePosition.x, Player2Body.TruePosition.y + 0.3636f));
                             Player2Body.transform.position = TempPosition;
                         }
-                        if (Player1Body != null && Player2Body != null)
+                        else if (Player1Body != null && Player2Body != null)
                         {
                             var TempPosition = Player1Body.transform.position;
                             Player1Body.transform.position = Player2Body.transform.position;

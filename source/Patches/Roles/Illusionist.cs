@@ -167,6 +167,7 @@ namespace TownOfUs.Roles
                 IllusionList1.chatBubPool.activeChildren.Clear();
 
                 foreach (var TempPlayer in PlayerControl.AllPlayerControls)
+                {
                     if (TempPlayer != null &&
                         TempPlayer.Data != null &&
                         !TempPlayer.Data.IsDead &&
@@ -178,7 +179,7 @@ namespace TownOfUs.Roles
                             if (player != null &&
                                 player.Data != null &&
                                 ((!player.Data.Disconnected && !player.Data.IsDead) ||
-                                Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId).ParentId == player.PlayerId))
+                                Object.FindObjectsOfType<DeadBody>().Any(x => x.ParentId == player.PlayerId)))
                             {
                                 IllusionList1.AddChat(TempPlayer, "Click here");
                                 IllusionList1.chatBubPool.activeChildren[IllusionList1.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetName(player.Data.PlayerName, false, false,
@@ -191,6 +192,7 @@ namespace TownOfUs.Roles
                         }
                         break;
                     }
+                }
             }
             if (IllusionList1 != null)
             {
@@ -299,6 +301,7 @@ namespace TownOfUs.Roles
                 IllusionList2.chatBubPool.activeChildren.Clear();
 
                 foreach (var TempPlayer in PlayerControl.AllPlayerControls)
+                {
                     if (TempPlayer != null &&
                         TempPlayer.Data != null &&
                         !TempPlayer.Data.IsDead &&
@@ -311,7 +314,7 @@ namespace TownOfUs.Roles
                                 player != null &&
                                 player.Data != null &&
                                 ((!player.Data.Disconnected && !player.Data.IsDead) ||
-                                Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => x.ParentId == player.PlayerId).ParentId == player.PlayerId))
+                                Object.FindObjectsOfType<DeadBody>().Any(x => x.ParentId == player.PlayerId)))
                             {
                                 IllusionList2.AddChat(TempPlayer, "Click here");
                                 IllusionList2.chatBubPool.activeChildren[IllusionList2.chatBubPool.activeChildren._size - 1].Cast<ChatBubble>().SetName(player.Data.PlayerName, false, false,
@@ -324,8 +327,8 @@ namespace TownOfUs.Roles
                         }
                         break;
                     }
+                }
             }
-            
             if (IllusionList2 != null)
             {
                 if (Minigame.Instance)
