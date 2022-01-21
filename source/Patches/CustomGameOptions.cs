@@ -1,7 +1,6 @@
 using TownOfUs.CrewmateRoles.EngineerMod;
 using TownOfUs.CrewmateRoles.MedicMod;
 using TownOfUs.CrewmateRoles.SeerMod;
-using TownOfUs.CrewmateRoles.IllusionistMod;
 using TownOfUs.CustomOption;
 using TownOfUs.NeutralRoles.ExecutionerMod;
 using TownOfUs.NeutralRoles.ShifterMod;
@@ -41,9 +40,10 @@ namespace TownOfUs
         public static int RetributionistOn => (int)Generate.RetributionistOn.Get();
         public static int HaunterOn => (int)Generate.HaunterOn.Get();
         public static int GrenadierOn => (int)Generate.GrenadierOn.Get();
-        public static int IllusionistOn => (int)Generate.IllusionistOn.Get();
+        public static int MediumOn => (int)Generate.MediumOn.Get();
         public static int TransporterOn => (int)Generate.TransporterOn.Get();
         public static int AgentOn => (int)Generate.AgentOn.Get();
+        public static int MastermindOn => (int)Generate.MastermindOn.Get();
         public static int TorchOn => (int)Generate.TorchOn.Get();
         public static int DiseasedOn => (int)Generate.DiseasedOn.Get();
         public static int FlashOn => (int)Generate.FlashOn.Get();
@@ -104,6 +104,8 @@ namespace TownOfUs
         public static float HackDuration => Generate.HackDurationOption.Get();
         public static float GlitchKillCooldown => Generate.GlitchKillCooldownOption.Get();
         public static int GlitchHackDistance => Generate.GlitchHackDistanceOption.Get();
+        public static bool GlitchHack => Generate.GlitchHack.Get();
+        public static bool GlitchMimic => Generate.GlitchMimic.Get();
         public static bool GlitchVent => Generate.GlitchVent.Get();
         public static float MorphlingCd => Generate.MorphlingCooldown.Get();
         public static float MorphlingDuration => Generate.MorphlingDuration.Get();
@@ -124,6 +126,7 @@ namespace TownOfUs
         public static bool SwooperVent => Generate.SwooperVent.Get();
         public static bool ImpostorSeeRoles => Generate.ImpostorSeeRoles.Get();
         public static bool DeadSeeRoles => Generate.DeadSeeRoles.Get();
+        public static bool DeadSeeVoteColors => Generate.DeadSeeVoteColors.Get();
         public static float DouseCd => Generate.DouseCooldown.Get();
         public static bool ArsonistGameEnd => Generate.ArsonistGameEnd.Get();
         public static bool ArsonistButton => Generate.ArsonistButton.Get();
@@ -155,17 +158,16 @@ namespace TownOfUs
         public static float GrenadeCd => Generate.GrenadeCooldown.Get();
         public static float GrenadeDuration => Generate.GrenadeDuration.Get();
         public static bool GrenadierVent => Generate.GrenadierVent.Get();
-        public static float IllusionCooldown => Generate.IllusionCooldown.Get();
-        public static float IllusionEndCooldown => Generate.IllusionEndCooldown.Get();
-        public static IllusionAppearance IllusionAppearance => (IllusionAppearance)Generate.IllusionAppearance.Get();
-        public static bool ImpIllusion => Generate.ImpIllusion.Get();
-        public static bool IllusionedImpKill => Generate.IllusionedImpKill.Get();
+        public static float MediateCooldown => Generate.MediateCooldown.Get();
+        public static bool ShowMediatePlayer => Generate.ShowMediatePlayer.Get();
         public static float TransportCooldown => Generate.TransportCooldown.Get();
         public static bool TransporterVitals => Generate.TransporterVitals.Get();
         public static float IntelCooldown => Generate.IntelCooldown.Get();
+        public static float IntelCorrect => Generate.IntelCorrect.Get();
         public static IntelInfo IntelInfo => (IntelInfo)Generate.IntelInfo.Get();
         public static bool ImpHijackKill => Generate.ImpHijackKill.Get();
         public static bool ImpHijackVent => Generate.ImpHijackVent.Get();
         public static bool AgentGameEnd => Generate.AgentGameEnd.Get();
+        public static bool MastermindVent => Generate.MastermindVent.Get();
     }
 }

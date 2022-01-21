@@ -53,8 +53,7 @@ namespace TownOfUs
         public static Sprite DragSprite;
         public static Sprite DropSprite;
         public static Sprite FlashSprite;
-        public static Sprite IllusionSprite;
-        public static Sprite EndIllusionSprite;
+        public static Sprite MediateSprite;
         public static Sprite TransportSprite;
         public static Sprite IntelSprite;
         public static Sprite CrewmateGuessSprite;
@@ -110,8 +109,7 @@ namespace TownOfUs
             CycleSprite = CreateSprite("TownOfUs.Resources.Cycle.png");
             GuessSprite = CreateSprite("TownOfUs.Resources.Guess.png");
             FlashSprite = CreateSprite("TownOfUs.Resources.Flash.png");
-            IllusionSprite = CreateSprite("TownOfUs.Resources.Illusion.png");
-            EndIllusionSprite = CreateSprite("TownOfUs.Resources.EndIllusion.png");
+            MediateSprite = CreateSprite("TownOfUs.Resources.Mediate.png");
             TransportSprite = CreateSprite("TownOfUs.Resources.Transport.png");
             IntelSprite = CreateSprite("TownOfUs.Resources.Intel.png");
             CrewmateGuessSprite = CreateSprite("TownOfUs.Resources.CrewmateGuess.png");

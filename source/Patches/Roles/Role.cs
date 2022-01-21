@@ -7,6 +7,7 @@ using Reactor.Extensions;
 using TMPro;
 using TownOfUs.ImpostorRoles.CamouflageMod;
 using TownOfUs.Roles.Modifiers;
+using TownOfUs.NeutralRoles.AgentMod;
 using UnhollowerBaseLib;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -56,8 +57,6 @@ namespace TownOfUs.Roles
         protected internal bool Hidden { get; set; } = false;
         
         public List<byte> ProtectRevealed = new List<byte>();
-
-        public PlayerControl IllusionTarget { get; set; }
 
         //public static Faction Faction;
         protected internal Faction Faction { get; set; } = Faction.Crewmates;
@@ -110,10 +109,11 @@ namespace TownOfUs.Roles
             );
             if (PlayerControl.LocalPlayer.Data.IsDead && CustomGameOptions.DeadSeeRoles) return Utils.ShowDeadBodies;
             if (Faction == Faction.Impostors && PlayerControl.LocalPlayer.Data.IsImpostor() &&
-                CustomGameOptions.ImpostorSeeRoles &&
-                GetRole(Player).IllusionTarget == null/* && GetRole(Player).IllusionTarget.PlayerId != PlayerControl.LocalPlayer.PlayerId*/) return true;
+                CustomGameOptions.ImpostorSeeRoles) return true;
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Glitch) && Role.GetRole<Glitch>(PlayerControl.LocalPlayer).ProtectRevealed.Contains(Player.PlayerId) &&
                 (CustomGameOptions.ImpShieldReveal == ImpProtectRevealEnum.Imp || CustomGameOptions.ImpShieldReveal == ImpProtectRevealEnum.Both)) return true;
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Agent) && CustomGameOptions.IntelInfo == IntelInfo.Role && Role.GetRole<Agent>(PlayerControl.LocalPlayer).IntelPlayers.Contains(Player.PlayerId)) return true;
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Mastermind) && Role.GetRole<Mastermind>(PlayerControl.LocalPlayer).Reported.Contains(Player.PlayerId)) return true;
             return GetRole(PlayerControl.LocalPlayer) == this;
         }
 
@@ -553,22 +553,11 @@ namespace TownOfUs.Roles
 
                 foreach (var player in PlayerControl.AllPlayerControls)
                 {
-                    // if (GetRole(player).IllusionTarget == null)
-                    //     System.Console.WriteLine("bruh it's not set");
-                    // else
-                    //     System.Console.WriteLine("okay it's set");
-                    if (!(player.Data != null && player.Data.IsImpostor() && PlayerControl.LocalPlayer.Data.IsImpostor())/* ||
-                        (GetRole(player).IllusionTarget != null && GetRole(player).IllusionTarget.PlayerId != PlayerControl.LocalPlayer.PlayerId)*/)
+                    if (!(player.Data != null && player.Data.IsImpostor() && PlayerControl.LocalPlayer.Data.IsImpostor()))
                     {
                         player.nameText.text = player.name;
                         player.nameText.color = Color.white;
                     }
-                    // else if (player.Data != null && player.Data.IsImpostor() && PlayerControl.LocalPlayer.Data.IsImpostor() &&
-                    //     (GetRole(player).IllusionTarget == null || GetRole(player).IllusionTarget.PlayerId == PlayerControl.LocalPlayer.PlayerId))
-                    // {
-                    //     player.nameText.text = player.name;
-                    //     player.nameText.color = Color.red;
-                    // }
 
                     var role = GetRole(player);
                     if (role != null)

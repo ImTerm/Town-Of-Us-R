@@ -89,7 +89,7 @@ Join our [Discord](https://discord.gg/ugyc4EVUYZ) if you have any problems or wa
   <summary> Changelog </summary>
   <details>
   <summary> v2.4.2-tdev5</summary>
-  <ul> <li>Another minor patch to hopefully finally fix all the issues with the menus for Illusionist and Transporter. Now an Illusioned Impostor's role is not seen by their teamate if the option to hide them is on.</li> </ul>
+  <ul> <li>Another minor patch to hopefully finally fix all the issues with the menus for Illusionist and Transporter. Now an illusioned Impostor's role is not seen by their teamate if the option to hide them is on.</li> </ul>
   </details>
   <details>
   <details>
@@ -420,7 +420,7 @@ Join our [Discord](https://discord.gg/ugyc4EVUYZ) if you have any problems or wa
 \
 **13. Finally, launch `Among Us.exe` from that folder.**\
 \
-A first launch may take up to 5 minutes, so be patient if it doesn't launch immediately.<br/>
+A first launch may take up to 5 minutes, so be patient if it doesn't launch imillusionly.<br/>
 <br/>
 
 ## Installation Guide (Epic Games)
@@ -450,7 +450,7 @@ A first launch may take up to 5 minutes, so be patient if it doesn't launch imme
 \
 **13. Finally, launch Among Us from Epic Games library.**\
 \
-A first launch may take up to 5 minutes, so be patient if it doesn't launch immediately.<br/>
+A first launch may take up to 5 minutes, so be patient if it doesn't launch imillusionly.<br/>
 <br/>
 
 ![Install](https://i.imgur.com/pvBAyZN.png)

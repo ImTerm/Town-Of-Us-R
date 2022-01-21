@@ -21,19 +21,27 @@ namespace TownOfUs.NeutralRoles.AgentMod
                 if (role.ClosestPlayer == null) return false;
                 if (role.IntelTimer() != 0f) return false;
                 if (!__instance.enabled) return false;
+                
                 var maxDistance = GameOptionsData.KillDistances[PlayerControl.GameOptions.KillDistance];
                 if (Vector2.Distance(role.ClosestPlayer.GetTruePosition(),
                     PlayerControl.LocalPlayer.GetTruePosition()) > maxDistance) return false;
 
+                role.LastIntel = DateTime.UtcNow;
 
-                var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId,
-                    (byte) CustomRPC.Intel, SendOption.Reliable, -1);
-                writer.Write(PlayerControl.LocalPlayer.PlayerId);
-                writer.Write(role.ClosestPlayer.PlayerId);
-                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                if (Role.GetRole(role.ClosestPlayer).Faction != role.GuessMode) return false;
+
+                role.LastIntel = role.LastIntel.AddSeconds(CustomGameOptions.IntelCorrect * -1);
 
                 role.IntelPlayers.Add(role.ClosestPlayer.PlayerId);
-                role.LastIntel = DateTime.UtcNow;
+            }
+            else if (__instance == role.CycleButton)
+            {
+                if (role.GuessMode == Faction.Crewmates)
+                    role.GuessMode = Faction.Neutral;
+                else if (role.GuessMode == Faction.Neutral)
+                    role.GuessMode = Faction.Impostors;
+                else if (role.GuessMode == Faction.Impostors)
+                    role.GuessMode = Faction.Crewmates;
             }
             return false;
         }

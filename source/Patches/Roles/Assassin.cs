@@ -24,7 +24,7 @@ namespace TownOfUs.Roles
             { "Spy", new Color(0.8f, 0.64f, 0.8f, 1f) },
             { "Altruist", new Color(0.4f, 0f, 0f, 1f) },
             { "Retributionist", new Color(1f, 1f, 0.7f, 1f) },
-            { "Illusionist", new Color(0.8f, 0.3f, 1f, 1f) },
+            { "Medium", new Color(0.65f, 0.5f, 1f, 1f) },
             { "Transporter", new Color(0f, 0.93f, 1f, 1f) }
         };
 

@@ -24,7 +24,7 @@ namespace TownOfUs.Roles
         {
             Name = "Transporter";
             ImpostorText = () => "Choose two players to swap locations";
-            TaskText = () => "Choose two players to swap their locations";
+            TaskText = () => "Choose two players to swap locations";
             Color = new Color(0f, 0.93f, 1f, 1f);
             RoleType = RoleEnum.Transporter;
             Scale = 1.4f;
@@ -317,16 +317,16 @@ namespace TownOfUs.Roles
                                                         if (body.ParentId == TransportPlayer2.PlayerId)
                                                             Player2Body = body;
                                                 
-                                                if (TransportPlayer1.inVent)
-                                                {
-                                                    TransportPlayer1.MyPhysics.RpcExitVent(Vent.currentVent.Id);
-                                                    TransportPlayer1.MyPhysics.ExitAllVents();
-                                                }
-                                                if (TransportPlayer2.inVent)
-                                                {
-                                                    TransportPlayer2.MyPhysics.RpcExitVent(Vent.currentVent.Id);
-                                                    TransportPlayer2.MyPhysics.ExitAllVents();
-                                                }
+                                                // if (TransportPlayer1.inVent)
+                                                // {
+                                                //     TransportPlayer1.MyPhysics.RpcExitVent(Vent.currentVent.Id);
+                                                //     TransportPlayer1.MyPhysics.ExitAllVents();
+                                                // }
+                                                // if (TransportPlayer2.inVent)
+                                                // {
+                                                //     TransportPlayer2.MyPhysics.RpcExitVent(Vent.currentVent.Id);
+                                                //     TransportPlayer2.MyPhysics.ExitAllVents();
+                                                // }
 
                                                 if (Player1Body == null && Player2Body == null)
                                                 {
@@ -360,25 +360,18 @@ namespace TownOfUs.Roles
                                                     Player2Body.transform.position = TempPosition;
                                                 }
                                                 
-                                                // if (Player1Body == null && Player2Body == null)
-                                                // {
-                                                //     Coroutines.Start(Transport());
-                                                // }
-                                                // else
-                                                // {
-                                                    var write = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId,
-                                                        (byte) CustomRPC.TransportPlayers, SendOption.Reliable, -1);
-                                                    write.Write(TransportPlayer1.PlayerId);
-                                                    write.Write(TransportPlayer2.PlayerId);
-                                                    AmongUsClient.Instance.FinishRpcImmediately(write);
+                                                var write = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId,
+                                                    (byte) CustomRPC.TransportPlayers, SendOption.Reliable, -1);
+                                                write.Write(TransportPlayer1.PlayerId);
+                                                write.Write(TransportPlayer2.PlayerId);
+                                                AmongUsClient.Instance.FinishRpcImmediately(write);
 
-                                                    if (PlayerControl.LocalPlayer.PlayerId == TransportPlayer1.PlayerId ||
-                                                    PlayerControl.LocalPlayer.PlayerId == TransportPlayer2.PlayerId)
-                                                    Coroutines.Start(Utils.FlashCoroutine(Color));
+                                                if (PlayerControl.LocalPlayer.PlayerId == TransportPlayer1.PlayerId ||
+                                                PlayerControl.LocalPlayer.PlayerId == TransportPlayer2.PlayerId)
+                                                Coroutines.Start(Utils.FlashCoroutine(Color));
 
-                                                    TransportPlayer1 = null;
-                                                    TransportPlayer2 = null;
-                                                // }
+                                                TransportPlayer1 = null;
+                                                TransportPlayer2 = null;
                                             }
                                     }
                                 }

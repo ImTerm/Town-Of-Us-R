@@ -11,14 +11,21 @@ namespace TownOfUs.Roles
 {
     public class Agent : Role
     {
-        private KillButton intelButton;
-        private KillButton cycleButton;
-        public bool AgentWins;
+        public KillButton IntelButton;
+        public KillButton CycleButton;
+        public Faction GuessMode;
+
         public PlayerControl ClosestPlayer;
         public List<byte> IntelPlayers = new List<byte>();
+
         public DateTime LastIntel;
         public DateTime LastKill;
-        public Faction GuessMode;
+
+        public bool AgentWins;
+
+        public bool CrewmatesHijacked;
+        public bool NeutralsHijacked;
+        public bool ImpostorsHijacked;
 
         public Agent(PlayerControl player) : base(player)
         {
@@ -29,27 +36,33 @@ namespace TownOfUs.Roles
             RoleType = RoleEnum.Agent;
             Faction = Faction.Neutral;
             GuessMode = Faction.Crewmates;
+            IntelButton = null;
+            CycleButton = null;
+            AgentWins = false;
+            CrewmatesHijacked = false;
+            NeutralsHijacked = false;
+            ImpostorsHijacked = false;
         }
 
-        public KillButton IntelButton
-        {
-            get => intelButton;
-            set
-            {
-                intelButton = value;
-                ExtraButtons.Clear();
-                ExtraButtons.Add(value);
-            }
-        }
-        public KillButton CycleButton
-        {
-            get => cycleButton;
-            set
-            {
-                cycleButton = value;
-                ExtraButtons.Add(value);
-            }
-        }
+        // public KillButton IntelButton
+        // {
+        //     get => intelButton;
+        //     set
+        //     {
+        //         intelButton = value;
+        //         ExtraButtons.Clear();
+        //         ExtraButtons.Add(value);
+        //     }
+        // }
+        // public KillButton CycleButton
+        // {
+        //     get => cycleButton;
+        //     set
+        //     {
+        //         cycleButton = value;
+        //         ExtraButtons.Add(value);
+        //     }
+        // }
 
         // internal override bool EABBNOODFGL(ShipStatus __instance)
         // {
@@ -84,25 +97,28 @@ namespace TownOfUs.Roles
             LostByRPC = true;
         }
 
-        public bool AreCrewmatesHijacked()
+        public bool CheckCrewmateHijack()
         {
-            if (!MeetingHud.Instance) return false;
-            return PlayerControl.AllPlayerControls.ToArray().Count(x => Role.GetRole(x).Faction == Faction.Crewmates && !x.Data.IsDead && !x.Data.Disconnected && IntelPlayers.Contains(x.PlayerId))
-                == PlayerControl.AllPlayerControls.ToArray().Count(x => Role.GetRole(x).Faction == Faction.Crewmates && !x.Data.IsDead && !x.Data.Disconnected);
+            return PlayerControl.AllPlayerControls.ToArray().Count(x => x != null && x.Data != null &&
+                Role.GetRole(x).Faction == Faction.Crewmates && !x.Data.IsDead && !x.Data.Disconnected && IntelPlayers.Contains(x.PlayerId))
+                == PlayerControl.AllPlayerControls.ToArray().Count(x => x != null && x.Data != null &&
+                Role.GetRole(x).Faction == Faction.Crewmates && !x.Data.IsDead && !x.Data.Disconnected);
         }
 
-        public bool AreNeutralsHijacked()
+        public bool CheckNeutralHijack()
         {
-            if (!MeetingHud.Instance) return false;
-            return PlayerControl.AllPlayerControls.ToArray().Count(x => Role.GetRole(x).Faction == Faction.Neutral && !x.Data.IsDead && !x.Data.Disconnected && IntelPlayers.Contains(x.PlayerId))
-                == PlayerControl.AllPlayerControls.ToArray().Count(x => Role.GetRole(x).Faction == Faction.Neutral && !x.Data.IsDead && !x.Data.Disconnected);
+            return PlayerControl.AllPlayerControls.ToArray().Count(x => x != null && x.Data != null &&
+                Role.GetRole(x).Faction == Faction.Neutral && !x.Data.IsDead && !x.Data.Disconnected && IntelPlayers.Contains(x.PlayerId))
+                == PlayerControl.AllPlayerControls.ToArray().Count(x => x != null && x.Data != null &&
+                Role.GetRole(x).Faction == Faction.Neutral && !x.Data.IsDead && !x.Data.Disconnected);
         }
 
-        public bool AreImpostorsHijacked()
+        public bool CheckImpostorHijack()
         {
-            if (!MeetingHud.Instance) return false;
-            return PlayerControl.AllPlayerControls.ToArray().Count(x => Role.GetRole(x).Faction == Faction.Impostors && !x.Data.IsDead && !x.Data.Disconnected && IntelPlayers.Contains(x.PlayerId))
-                == PlayerControl.AllPlayerControls.ToArray().Count(x => Role.GetRole(x).Faction == Faction.Impostors && !x.Data.IsDead && !x.Data.Disconnected);
+            return PlayerControl.AllPlayerControls.ToArray().Count(x => x != null && x.Data != null &&
+                Role.GetRole(x).Faction == Faction.Impostors && !x.Data.IsDead && !x.Data.Disconnected && IntelPlayers.Contains(x.PlayerId))
+                == PlayerControl.AllPlayerControls.ToArray().Count(x => x != null && x.Data != null &&
+                Role.GetRole(x).Faction == Faction.Impostors && !x.Data.IsDead && !x.Data.Disconnected);
         }
 
         protected override void IntroPrefix(IntroCutscene._CoBegin_d__18 __instance)

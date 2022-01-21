@@ -15,29 +15,25 @@ using TownOfUs.Roles.Modifiers;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace TownOfUs.CrewmateRoles.IllusionistMod
+namespace TownOfUs.CrewmateRoles.MediumMod
 {
     [HarmonyPatch(typeof(KillButton), nameof(KillButton.DoClick))]
     [HarmonyPriority(Priority.Last)]
     public class PerformKillButton
-
     {
         public static bool Prefix(KillButton __instance)
         {
             if (__instance != DestroyableSingleton<HudManager>.Instance.KillButton) return true;
-            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Illusionist)) return true;
-            var role = Role.GetRole<Illusionist>(PlayerControl.LocalPlayer);
+            if (!PlayerControl.LocalPlayer.Is(RoleEnum.Medium)) return true;
+            var role = Role.GetRole<Medium>(PlayerControl.LocalPlayer);
             if (!PlayerControl.LocalPlayer.CanMove) return false;
             if (PlayerControl.LocalPlayer.Data.IsDead) return false;
             if (!__instance.enabled) return false;
 
-            if (!role.IsUsingIllusion && role.IllusionTimer() == 0f && role.IllusionList1 == null && role.IllusionList2 == null)
+            if (role.MediateTimer() == 0f)
             {
                 role.PressedButton = true;
-                role.MenuClick = true;
             }
-            else if (role.IsUsingIllusion && role.EndIllusionTimer() == 0f)
-                role.IsUsingIllusion = false;
 
             return false;
         }

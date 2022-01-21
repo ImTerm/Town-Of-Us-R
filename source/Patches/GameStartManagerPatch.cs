@@ -41,24 +41,26 @@ namespace TownOfUs.Patches
 
             public static void Postfix(GameStartManager __instance)
             {
-                __instance.GameRoomName.SetText(Input.GetKeyInt(KeyCode.Return) ? lobbyCodeText : $"Code\n<color=#00FF00FF>Hold [Enter]\nTo Reveal</color>");
+                // __instance.GameRoomName.SetText(Input.GetKeyInt(KeyCode.Return) ? lobbyCodeText : $"Code\n<color=#00FF00FF>Hold [Enter]\nTo Reveal</color>");
 
                 // if (!Input.GetKeyInt(KeyCode.Return) && lastEnter)
                 //     hasEntered = !hasEntered;
                 
                 // lastEnter = Input.GetKeyInt(KeyCode.Return);
 
-                if (!AmongUsClient.Instance.AmHost || !GameData.Instance) return;
+                if (!GameData.Instance) return;
 
                 if (update) currentText = __instance.PlayerCounter.text;
 
+                string prefix = $"<color=#FFFFFFFF>Host: {PlayerControl.AllPlayerControls.ToArray()[0].Data.PlayerName}</color>\n";
                 timer = Mathf.Max(0f, timer -= Time.deltaTime);
                 int minutes = (int)timer / 60;
                 int seconds = (int)timer % 60;
                 string suffix = $"\n<color=#FFFFFFFF>({minutes:00}:{seconds:00})</color>";
 
-                __instance.PlayerCounter.text = currentText + suffix;
                 __instance.PlayerCounter.autoSizeTextContainer = true;
+                __instance.PlayerCounter.enableWordWrapping = false;
+                __instance.PlayerCounter.text = prefix + currentText + suffix;
 
             }
         }

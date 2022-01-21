@@ -2,6 +2,7 @@
 using HarmonyLib;
 using TownOfUs.Roles;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace TownOfUs.NeutralRoles.AgentMod
 {
@@ -26,23 +27,20 @@ namespace TownOfUs.NeutralRoles.AgentMod
             {
                 role.IntelButton = Object.Instantiate(__instance.KillButton, __instance.KillButton.transform.parent);
                 role.IntelButton.graphic.enabled = true;
-                // role.IntelButton.GetComponent<AspectPosition>().DistanceFromEdge = TownOfUs.ButtonPosition;
-                role.IntelButton.transform.position = new Vector3(
-                    Camera.main.ScreenToWorldPoint(new Vector3(0, 0)).x + 0.75f,
-                    __instance.UseButton.transform.position.y, __instance.UseButton.transform.position.z);
-                role.IntelButton.gameObject.SetActive(false);
+                role.IntelButton.gameObject.SetActive(true);
             }
-            // role.IntelButton.GetComponent<AspectPosition>().Update();
+            role.IntelButton.transform.position = new Vector3(
+                Camera.main.ScreenToWorldPoint(new Vector3(0, 0)).x + 0.75f,
+                __instance.UseButton.transform.position.y, __instance.UseButton.transform.position.z);
 
             if (role.CycleButton == null)
             {
                 role.CycleButton = Object.Instantiate(__instance.KillButton, __instance.KillButton.transform.parent);
                 role.CycleButton.graphic.enabled = true;
-                role.CycleButton.transform.position = new Vector3(role.IntelButton.transform.position.x,
-                    role.IntelButton.transform.position.y, __instance.ReportButton.transform.position.z);
-                role.CycleButton.gameObject.SetActive(false);
+                role.CycleButton.gameObject.SetActive(true);
             }
-            // role.CycleButton.GetComponent<AspectPosition>().Update();
+            role.CycleButton.transform.position = new Vector3(role.IntelButton.transform.position.x,
+                role.CycleButton.transform.position.y, __instance.UseButton.transform.position.z);
 
             if (role.GuessMode == Faction.Crewmates)
                 role.IntelButton.graphic.sprite = CrewmateSprite;
@@ -53,7 +51,7 @@ namespace TownOfUs.NeutralRoles.AgentMod
 
             role.CycleButton.graphic.sprite = CycleSprite;
 
-            if (!PlayerControl.LocalPlayer.Data.IsDead)
+            if (PlayerControl.LocalPlayer.Data.IsDead)
             {
                 KillButton.gameObject.SetActive(false);
                 role.IntelButton.gameObject.SetActive(false);
@@ -61,7 +59,7 @@ namespace TownOfUs.NeutralRoles.AgentMod
             }
             else
             {
-                if (CustomGameOptions.ImpHijackKill && role.AreImpostorsHijacked())
+                if (CustomGameOptions.ImpHijackKill && role.ImpostorsHijacked)
                 {
                     KillButton.enabled = true;
                     KillButton.gameObject.SetActive(!MeetingHud.Instance);
@@ -77,6 +75,9 @@ namespace TownOfUs.NeutralRoles.AgentMod
                 role.CycleButton.gameObject.SetActive(!MeetingHud.Instance);
                 role.CycleButton.SetCoolDown(0f, 1f);
             }
+
+            role.CycleButton.graphic.color = Palette.EnabledColor;
+            role.CycleButton.graphic.material.SetFloat("_Desat", 0f);
 
             if (!role.IntelButton.isCoolingDown)
             {
@@ -99,7 +100,6 @@ namespace TownOfUs.NeutralRoles.AgentMod
                 KillButton.graphic.color = Palette.DisabledClear;
                 KillButton.graphic.material.SetFloat("_Desat", 1f);
             }
-
         }
     }
 }

@@ -18,7 +18,7 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption SnitchOn;
         public static CustomNumberOption AltruistOn;
         public static CustomNumberOption RetributionistOn;
-        public static CustomNumberOption IllusionistOn;
+        public static CustomNumberOption MediumOn;
         public static CustomNumberOption TransporterOn;
         public static CustomNumberOption HaunterOn;
 
@@ -43,6 +43,7 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption AssassinOn;
         public static CustomNumberOption UnderdogOn;
         public static CustomNumberOption GrenadierOn;
+        public static CustomNumberOption MastermindOn;
 
 
         /*
@@ -64,6 +65,7 @@ namespace TownOfUs.CustomOption
         public static CustomToggleOption MeetingColourblind;
         public static CustomToggleOption ImpostorSeeRoles;
         public static CustomToggleOption DeadSeeRoles;
+        public static CustomToggleOption DeadSeeVoteColors;
         public static CustomNumberOption MaxImpostorRoles;
         public static CustomNumberOption MaxNeutralRoles;
         public static CustomToggleOption RoleUnderName;
@@ -134,12 +136,9 @@ namespace TownOfUs.CustomOption
         public static CustomHeaderOption Swapper;
         public static CustomToggleOption SwapperButton;
 
-        public static CustomHeaderOption Illusionist;
-        public static CustomNumberOption IllusionCooldown;
-        public static CustomNumberOption IllusionEndCooldown;
-        public static CustomStringOption IllusionAppearance;
-        public static CustomToggleOption ImpIllusion;
-        public static CustomToggleOption IllusionedImpKill;
+        public static CustomHeaderOption Medium;
+        public static CustomNumberOption MediateCooldown;
+        public static CustomToggleOption ShowMediatePlayer;
 
         public static CustomHeaderOption Transporter;
         public static CustomNumberOption TransportCooldown;
@@ -156,6 +155,8 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption HackDurationOption;
         public static CustomNumberOption GlitchKillCooldownOption;
         public static CustomStringOption GlitchHackDistanceOption;
+        public static CustomToggleOption GlitchHack;
+        public static CustomToggleOption GlitchMimic;
         public static CustomToggleOption GlitchVent;
 
         public static CustomHeaderOption Morphling;
@@ -173,6 +174,7 @@ namespace TownOfUs.CustomOption
 
         public static CustomHeaderOption Agent;
         public static CustomNumberOption IntelCooldown;
+        public static CustomNumberOption IntelCorrect;
         public static CustomStringOption IntelInfo;
         public static CustomToggleOption ImpHijackKill;
         public static CustomToggleOption ImpHijackVent;
@@ -236,6 +238,9 @@ namespace TownOfUs.CustomOption
         public static CustomNumberOption GrenadeDuration;
         public static CustomToggleOption GrenadierVent;
 
+        public static CustomHeaderOption Mastermind;
+        public static CustomToggleOption MastermindVent;
+
         public static Func<object, string> PercentFormat { get; } = value => $"{value:0}%";
         private static Func<object, string> CooldownFormat { get; } = value => $"{value:0.0#}s";
 
@@ -275,7 +280,7 @@ namespace TownOfUs.CustomOption
                 PercentFormat);
             RetributionistOn = new CustomNumberOption(true, num++, "<color=#FFFF99FF>Retributionist</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
-            IllusionistOn = new CustomNumberOption(true, num++, "<color=#BB4DFFFF>Illusionist</color>", 0f, 0f, 100f, 10f,
+            MediumOn = new CustomNumberOption(true, num++, "<color=#A680FFFF>Medium</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
             TransporterOn = new CustomNumberOption(true, num++, "<color=#00EEFFFF>Transporter</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
@@ -318,6 +323,8 @@ namespace TownOfUs.CustomOption
                 PercentFormat);
             GrenadierOn = new CustomNumberOption(true, num++, "<color=#FF0000FF>Grenadier</color>", 0f, 0f, 100f, 10f,
                 PercentFormat);
+            MastermindOn = new CustomNumberOption(true, num++, "<color=#FF0000FF>Mastermind</color>", 0f, 0f, 100f, 10f,
+                PercentFormat);
 
             Modifiers = new CustomHeaderOption(num++, "Modifiers");
             TorchOn = new CustomNumberOption(true, num++, "<color=#FFFF99FF>Torch</color>", 0f, 0f, 100f, 10f,
@@ -346,6 +353,8 @@ namespace TownOfUs.CustomOption
 
             DeadSeeRoles =
                 new CustomToggleOption(num++, "Dead Can See Everyone's Roles", false);
+            DeadSeeVoteColors =
+                new CustomToggleOption(num++, "Dead Can See Everyone's Votes", false);
 
             MaxImpostorRoles =
                 new CustomNumberOption(num++, "Max Impostor Roles", 1f, 1f, 3f, 1f);
@@ -490,18 +499,12 @@ namespace TownOfUs.CustomOption
             RetributionistGuessNeutrals = new CustomToggleOption(num++, "Retributionist Can Guess Neutral Roles", false);
             RetributionistMultiKill = new CustomToggleOption(num++, "Retributionist Can Kill More Than Once Per Meeting", false);
 
-            Illusionist =
-                new CustomHeaderOption(num++, "<color=#BB4DFFFF>Illusionist</color>");
-            IllusionCooldown =
-                 new CustomNumberOption(num++, "Illusion Cooldown", 20f, 0f, 60f, 2.5f, CooldownFormat);
-            IllusionEndCooldown =
-                 new CustomNumberOption(num++, "Illusion End Cooldown", 10f, 0f, 60f, 1f, CooldownFormat);
-            IllusionAppearance =
-                 new CustomStringOption(num++, "Illusion Appears To", new[] { "Everyone", "Non-Crew", "Imps Only" });
-            ImpIllusion =
-                 new CustomToggleOption(num++, "Illusioned Impostors Are Unknown To Teamates", true);
-            IllusionedImpKill = 
-                 new CustomToggleOption(num++, "Illusioned Impostors Can Be Killed By Their Teamates", true);
+            Medium =
+                new CustomHeaderOption(num++, "<color=#A680FFFF>Medium</color>");
+            MediateCooldown =
+                 new CustomNumberOption(num++, "Mediate Cooldown", 20f, 0f, 60f, 2.5f, CooldownFormat);
+            ShowMediatePlayer =
+                 new CustomToggleOption(num++, "Medium Knows Who The Target Is", true);
 
             Transporter =
                 new CustomHeaderOption(num++, "<color=#00EEFFFF>Transporter</color>");
@@ -548,6 +551,10 @@ namespace TownOfUs.CustomOption
                 new CustomNumberOption(num++, "Glitch Kill Cooldown", 25f, 10f, 120f, 2.5f, CooldownFormat);
             GlitchHackDistanceOption =
                 new CustomStringOption(num++, "Glitch Hack Distance", new[] { "Short", "Normal", "Long" });
+            GlitchHack =
+                new CustomToggleOption(num++, "Glitch Can Hack", true);
+            GlitchMimic =
+                new CustomToggleOption(num++, "Glitch Can Mimic", true);
             GlitchVent =
                 new CustomToggleOption(num++, "Glitch Can Vent", false);
 
@@ -570,9 +577,11 @@ namespace TownOfUs.CustomOption
             Agent =
                 new CustomHeaderOption(num++, "<color=#333333FF>The Agent</color>");
             IntelCooldown =
-                new CustomNumberOption(num++, "Intel Cooldown", 30f, 10f, 60f, 2.5f, CooldownFormat);
+                new CustomNumberOption(num++, "Investigate Cooldown", 30f, 10f, 60f, 2.5f, CooldownFormat);
+            IntelCorrect =
+                new CustomNumberOption(num++, "Correct Guess Cooldown Reduction", 25f, 0f, 60f, 2.5f, CooldownFormat);
             IntelInfo =
-                new CustomStringOption(num++, "Info That The Agent Sees", new[] { "Role", "Team" });
+                new CustomStringOption(num++, "Info That The Agent Sees", new[] { "Team", "Role" });
             ImpHijackKill =
                 new CustomToggleOption(num++, "The Agent Can Kill While Imps Hijacked", false);
             ImpHijackVent =
@@ -643,6 +652,11 @@ namespace TownOfUs.CustomOption
                 new CustomNumberOption(num++, "Flash Grenade Duration", 10, 5, 15, 1f, CooldownFormat);
             GrenadierVent =
                 new CustomToggleOption(num++, "Grenadier Can Vent", false);
+
+            Mastermind =
+                new CustomHeaderOption(num++, "<color=#FF0000FF>Mastermind</color>");
+            MastermindVent =
+                new CustomToggleOption(num++, "Mastermind Can Vent", true);
         }
     }
 }

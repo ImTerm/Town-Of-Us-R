@@ -533,6 +533,8 @@ namespace TownOfUs.Roles
         {
             public static void HackButtonUpdate(Glitch __gInstance, HudManager __instance)
             {
+                if (!CustomGameOptions.GlitchHack) return;
+
                 if (__gInstance.HackButton == null)
                 {
                     __gInstance.HackButton = Object.Instantiate(__instance.KillButton, __instance.KillButton.transform.parent);
@@ -544,7 +546,7 @@ namespace TownOfUs.Roles
 
                 __gInstance.HackButton.gameObject.SetActive(__instance.UseButton.isActiveAndEnabled && !MeetingHud.Instance &&
                                                             !__gInstance.Player.Data.IsDead);
-                __gInstance.HackButton.transform.position = new Vector3(__gInstance.MimicButton.transform.position.x,
+                __gInstance.HackButton.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(new Vector3(0, 0)).x + 0.75f,
                     __gInstance.HackButton.transform.position.y, __instance.ReportButton.transform.position.z);
                 __gInstance.HackButton.SetCoolDown(
                     CustomGameOptions.HackCooldown - (float)(DateTime.UtcNow - __gInstance.LastHack).TotalSeconds,
@@ -599,6 +601,8 @@ namespace TownOfUs.Roles
         {
             public static void MimicButtonUpdate(Glitch __gInstance, HudManager __instance)
             {
+                if (!CustomGameOptions.GlitchMimic) return;
+
                 if (__gInstance.MimicButton == null)
                 {
                     __gInstance.MimicButton = Object.Instantiate(__instance.KillButton, __instance.KillButton.transform.parent);

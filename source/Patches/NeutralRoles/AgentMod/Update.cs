@@ -33,25 +33,14 @@ namespace TownOfUs.NeutralRoles.AgentMod
                     switch (roleType)
                     {
                         case RoleEnum.Crewmate:
-                            state.NameText.color =
-                                CustomGameOptions.IntelInfo == IntelInfo.Faction ? Color.green : Color.white;
-                            state.NameText.text = NameText(player,
-                                CustomGameOptions.IntelInfo == IntelInfo.Role ? " (Crew)" : "", true);
+                            state.NameText.color = Color.green;
                             break;
                         case RoleEnum.Impostor:
-                            state.NameText.color = CustomGameOptions.IntelInfo == IntelInfo.Faction
-                                ? Color.red
-                                : Palette.ImpostorRed;
-                            state.NameText.text = NameText(player,
-                                CustomGameOptions.IntelInfo == IntelInfo.Role ? " (Imp)" : "", true);
+                            state.NameText.color = Color.red;
                             break;
                         default:
                             var role = Role.GetRole(player);
-                            state.NameText.color = CustomGameOptions.IntelInfo == IntelInfo.Faction
-                                ? role.FactionColor
-                                : role.Color;
-                            state.NameText.text = NameText(player,
-                                CustomGameOptions.IntelInfo == IntelInfo.Role ? $" ({role.Name})" : "", true);
+                            state.NameText.color = role.FactionColor;
                             break;
                     }
                 }
@@ -60,8 +49,9 @@ namespace TownOfUs.NeutralRoles.AgentMod
 
         [HarmonyPriority(Priority.Last)]
         private static void Postfix(HudManager __instance)
-
         {
+            if (CustomGameOptions.IntelInfo == IntelInfo.Role) return;
+
             if (PlayerControl.AllPlayerControls.Count <= 1) return;
             if (PlayerControl.LocalPlayer == null) return;
             if (PlayerControl.LocalPlayer.Data == null) return;
@@ -79,25 +69,14 @@ namespace TownOfUs.NeutralRoles.AgentMod
                 switch (roleType)
                 {
                     case RoleEnum.Crewmate:
-                        player.nameText.color =
-                            CustomGameOptions.IntelInfo == IntelInfo.Faction ? Color.green : Color.white;
-                        player.nameText.text = NameText(player,
-                            CustomGameOptions.IntelInfo == IntelInfo.Role ? "\n Crewmate" : "");
+                        player.nameText.color = Color.green;
                         break;
                     case RoleEnum.Impostor:
-                        player.nameText.color = CustomGameOptions.IntelInfo == IntelInfo.Faction
-                            ? Color.red
-                            : Palette.ImpostorRed;
-                        player.nameText.text = NameText(player,
-                            CustomGameOptions.IntelInfo == IntelInfo.Role ? "\n Impostor" : "");
+                        player.nameText.color = Color.red;
                         break;
                     default:
                         var role = Role.GetRole(player);
-                        player.nameText.color = CustomGameOptions.IntelInfo == IntelInfo.Faction
-                            ? role.FactionColor
-                            : role.Color;
-                        player.nameText.text = NameText(player,
-                            CustomGameOptions.IntelInfo == IntelInfo.Role ? $"\n {role.Name}" : "");
+                        player.nameText.color = role.FactionColor;
                         break;
                 }
             }

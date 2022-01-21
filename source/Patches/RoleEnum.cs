@@ -22,7 +22,7 @@ namespace TownOfUs
         Phantom,
         Retributionist,
         Haunter,
-        Illusionist,
+        Medium,
         Transporter,
         Agent,
 
@@ -35,6 +35,7 @@ namespace TownOfUs
         Assassin,
         Underdog,
         Grenadier,
+        Mastermind,
 
 
         Glitch,

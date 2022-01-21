@@ -22,6 +22,7 @@ namespace TownOfUs.Roles
             { "Assassin", Color.red },
             { "Underdog", Color.red },
             { "Grenadier", Color.red },
+            { "Mastermind", Color.red },
             { "Loving Impostor", new Color(1f, 0.4f, 0.8f, 1f) }
         };
 
