@@ -420,7 +420,7 @@ Join our [Discord](https://discord.gg/ugyc4EVUYZ) if you have any problems or wa
 \
 **13. Finally, launch `Among Us.exe` from that folder.**\
 \
-A first launch may take up to 5 minutes, so be patient if it doesn't launch imillusionly.<br/>
+A first launch may take up to 5 minutes, so be patient if it doesn't launch immediately.<br/>
 <br/>
 
 ## Installation Guide (Epic Games)
@@ -450,7 +450,7 @@ A first launch may take up to 5 minutes, so be patient if it doesn't launch imil
 \
 **13. Finally, launch Among Us from Epic Games library.**\
 \
-A first launch may take up to 5 minutes, so be patient if it doesn't launch imillusionly.<br/>
+A first launch may take up to 5 minutes, so be patient if it doesn't launch immediately.<br/>
 <br/>
 
 ![Install](https://i.imgur.com/pvBAyZN.png)

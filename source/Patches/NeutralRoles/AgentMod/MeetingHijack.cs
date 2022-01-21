@@ -12,12 +12,14 @@ namespace TownOfUs.NeutralRoles.AgentMod
         [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
         public class MeetingHudUpdate
         {
+            public static TextMeshPro HijackText;
+
             public static void Postfix(MeetingHud __instance)
             {
                 if (__instance.state == MeetingHud.VoteStates.Animating) return;
 
                 var Hijacked = false;
-                
+
                 if (Role.GetRole(PlayerControl.LocalPlayer).Faction == Faction.Crewmates)
                 {
                     if (PlayerControl.AllPlayerControls.ToArray().Any(x => x != null && x.Data != null && x.Is(RoleEnum.Agent) && Role.GetRole<Agent>(x).CrewmatesHijacked))
@@ -35,11 +37,22 @@ namespace TownOfUs.NeutralRoles.AgentMod
                 }
 
                 if (!Hijacked) return;
+                System.Console.WriteLine("Reached here 1");
 
-                var HijackText = Object.Instantiate(__instance.TitleText);
-                HijackText.transform.position.Set(HijackText.transform.position.x, HijackText.transform.position.y - 10f, HijackText.transform.position.z);
+                if (HijackText == null)
+                {
+                    HijackText = Object.Instantiate(__instance.TitleText);
+                }
+                System.Console.WriteLine("Reached here 2");
+                HijackText.transform.position.Set(Camera.main.ScreenToWorldPoint(new Vector3(0, 0)).x + (Camera.main.pixelWidth / 2),
+                    Camera.main.ScreenToWorldPoint(new Vector3(0, 0)).y + (Camera.main.pixelHeight / 2),
+                    HijackText.transform.position.z);
+                System.Console.WriteLine(HijackText.transform.position);
                 HijackText.text = "The Agent is Hijacking your team! Find out who they are and stop them!";
+                System.Console.WriteLine(HijackText.text);
                 HijackText.color = new Color(0.2f, 0.2f, 0.2f, 1.0f);
+                System.Console.WriteLine("Reached here 3");
+                
             }
         }
 
