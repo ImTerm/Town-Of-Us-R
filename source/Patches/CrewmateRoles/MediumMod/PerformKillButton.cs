@@ -30,9 +30,11 @@ namespace TownOfUs.CrewmateRoles.MediumMod
             if (PlayerControl.LocalPlayer.Data.IsDead) return false;
             if (!__instance.enabled) return false;
 
-            if (role.MediateTimer() == 0f)
+            if (role.MediateTimer() == 0f && role.ButtonUsable)
             {
                 role.PressedButton = true;
+                role.UsesLeft--;
+                role.UsedThisRound = true;
             }
 
             return false;

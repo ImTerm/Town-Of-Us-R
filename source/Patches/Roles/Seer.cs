@@ -3,12 +3,19 @@ using System.Collections.Generic;
 using TownOfUs.CrewmateRoles.SeerMod;
 using TownOfUs.Extensions;
 using UnityEngine;
+using TMPro;
 
 namespace TownOfUs.Roles
 {
     public class Seer : Role
     {
         public List<byte> Investigated = new List<byte>();
+
+        public int UsesLeft;
+        public TextMeshPro UsesText;
+        public bool UsedThisRound;
+
+        public bool ButtonUsable => UsesLeft != 0 && (!UsedThisRound || !CustomGameOptions.RewindPerRound);
 
         public Seer(PlayerControl player) : base(player)
         {
@@ -17,6 +24,9 @@ namespace TownOfUs.Roles
             TaskText = () => "Investigate roles and find the Impostor";
             Color = new Color(1f, 0.8f, 0.5f, 1f);
             RoleType = RoleEnum.Seer;
+            UsesLeft = (int) CustomGameOptions.MediateMaxUses;
+            if (UsesLeft == 0) UsesLeft = -1;
+            UsedThisRound = false;
         }
 
         public PlayerControl ClosestPlayer;

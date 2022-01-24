@@ -21,18 +21,40 @@ namespace TownOfUs.CrewmateRoles.TransporterMod
             transportButton.gameObject.SetActive(!MeetingHud.Instance && !data.IsDead);
             if (data.IsDead) return;
 
-            transportButton.SetCoolDown(role.TransportTimer(), CustomGameOptions.TransportCooldown);
+            if (role.ButtonUsable)
+                transportButton.SetCoolDown(role.TransportTimer(), CustomGameOptions.TransportCooldown);
+
+            if (role.UsesText == null && role.UsesLeft > 0)
+            {
+                role.UsesText = Object.Instantiate(transportButton.cooldownTimerText, transportButton.transform);
+                role.UsesText.gameObject.SetActive(true);
+                role.UsesText.transform.localPosition = new Vector3(
+                    role.UsesText.transform.localPosition.x + 0.26f,
+                    role.UsesText.transform.localPosition.y + 0.29f,
+                    role.UsesText.transform.localPosition.z);
+                role.UsesText.transform.localScale = role.UsesText.transform.localScale * 0.6f;
+                role.UsesText.alignment = TMPro.TextAlignmentOptions.Right;
+                role.UsesText.fontStyle = TMPro.FontStyles.Bold;
+            }
+            if (role.UsesText != null)
+            {
+                role.UsesText.text = role.UsesLeft + "";
+            }
 
             var renderer = transportButton.graphic;
-            if (!transportButton.isCoolingDown)
+            if (!transportButton.isCoolingDown && role.ButtonUsable)
             {
                 renderer.color = Palette.EnabledColor;
                 renderer.material.SetFloat("_Desat", 0f);
+                role.UsesText.color = Palette.EnabledColor;
+                role.UsesText.material.SetFloat("_Desat", 0f);
                 return;
             }
 
             renderer.color = Palette.DisabledClear;
             renderer.material.SetFloat("_Desat", 1f);
+            role.UsesText.color = Palette.DisabledClear;
+            role.UsesText.material.SetFloat("_Desat", 1f);
         }
     }
 }

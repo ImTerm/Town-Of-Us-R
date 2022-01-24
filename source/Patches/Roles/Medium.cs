@@ -13,6 +13,7 @@ using TownOfUs.Extensions;
 using TownOfUs.Roles.Modifiers;
 using Object = UnityEngine.Object;
 using HarmonyLib;
+using TMPro;
 
 namespace TownOfUs.Roles
 {
@@ -24,6 +25,12 @@ namespace TownOfUs.Roles
 
         public ChatController MediateBubble { get; set; }
         public List<byte> MediatedPlayers { get; set; }
+
+        public int UsesLeft;
+        public TextMeshPro UsesText;
+        public bool UsedThisRound;
+
+        public bool ButtonUsable => UsesLeft != 0 && (!UsedThisRound || !CustomGameOptions.MediatePerRound);
         
         public Medium(PlayerControl player) : base(player)
         {
@@ -37,6 +44,9 @@ namespace TownOfUs.Roles
             PressedButton = false;
             MediateBubble = null;
             MediatedPlayers = new List<byte>();
+            UsesLeft = (int) CustomGameOptions.MediateMaxUses;
+            if (UsesLeft == 0) UsesLeft = -1;
+            UsedThisRound = false;
         }
 
         public float MediateTimer()
@@ -60,8 +70,6 @@ namespace TownOfUs.Roles
                 PressedButton = false;
 
                 LastMediate = DateTime.UtcNow;
-
-                var UnMediatedBody = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => !MediatedPlayers.Contains(x.ParentId));
                 
                 MediateBubble = Object.Instantiate(__instance.Chat);
 
@@ -87,7 +95,7 @@ namespace TownOfUs.Roles
                 // MediateBubble.scroller.gameObject.SetActive(false);
 
                 MediateBubble.OpenKeyboardButton.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().enabled = false;
-                // MediateBubble.OpenKeyboardButton.gameObject.SetActive(false);
+                MediateBubble.OpenKeyboardButton.Destroy();
 
                 MediateBubble.gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>()
                     .enabled = false;
@@ -140,6 +148,8 @@ namespace TownOfUs.Roles
                     });
                 MediateBubble.chatBubPool.activeChildren[0].Cast<ChatBubble>().SetName(" ", true, false, Color.white);
                 MediateBubble.chatBubPool.activeChildren[0].Cast<ChatBubble>().SetCosmetics(TempData);
+
+                var UnMediatedBody = Object.FindObjectsOfType<DeadBody>().FirstOrDefault(x => !MediatedPlayers.Contains(x.ParentId));
                 
                 if (UnMediatedBody == null)
                 {
@@ -159,47 +169,69 @@ namespace TownOfUs.Roles
                     {
                         MediateBubble.chatBubPool.activeChildren[0].Cast<ChatBubble>().SetName("Unknown Player", true, false, Color.white);
                     }
-                    System.Console.WriteLine("Reached here 1");
+                    // System.Console.WriteLine("Reached here 1");
 
                     // List<PlainShipRoom> Rooms = ShipStatus.Instance.AllRooms.ToArray().Cast<PlainShipRoom>().Where(x => x.roomArea.IsTouching(UnMediatedBody.myCollider)).ToList();
                     PlainShipRoom ClosestRoom = new PlainShipRoom();
                     float SmallestDistance = float.MaxValue;
-                    System.Console.WriteLine("Reached here 2");
+                    // System.Console.WriteLine("Reached here 2");
                     
-                    foreach (PlainShipRoom Room in ShipStatus.Instance.AllRooms)
+                    foreach (PlainShipRoom Room in ShipStatus.Instance.AllRooms.Where(x =>
+                        x != null &&
+                        x.roomArea != null &&
+                        x.roomArea.bounds != null &&
+                        x.RoomId != (SystemTypes)0 &&
+                        x.RoomId != (SystemTypes)15 &&
+                        x.RoomId != (SystemTypes)16 &&
+                        x.RoomId != (SystemTypes)17
+                        ))
                     {
                         System.Console.WriteLine("Reached here 2.0");
-                        var ClosestBodyPoint = (Vector2)UnMediatedBody.myCollider.bounds.ClosestPoint((Vector2)Room.roomArea.bounds.ClosestPoint((Vector2)UnMediatedBody.TruePosition));
+                        System.Console.WriteLine(Room.roomArea.bounds);
                         System.Console.WriteLine("Reached here 2.1");
-                        var ClosestRoomPoint = (Vector2)Room.roomArea.bounds.ClosestPoint((Vector2)ClosestBodyPoint);
+                        System.Console.WriteLine(UnMediatedBody.myCollider.bounds);
                         System.Console.WriteLine("Reached here 2.2");
-                        var DistToRoom = Vector3.Distance(ClosestBodyPoint, ClosestRoomPoint);
+                        System.Console.WriteLine((Vector2)UnMediatedBody.TruePosition);
                         System.Console.WriteLine("Reached here 2.3");
+                        System.Console.WriteLine((Vector2)Room.roomArea.bounds.ClosestPoint((Vector2)UnMediatedBody.TruePosition));
+                        System.Console.WriteLine("Reached here 2.4");
+                        System.Console.WriteLine((Vector2)UnMediatedBody.myCollider.bounds.ClosestPoint((Vector2)Room.roomArea.bounds.ClosestPoint((Vector2)UnMediatedBody.TruePosition)));
+                        System.Console.WriteLine("Reached here 2.5");
+                        var ClosestBodyPoint = (Vector2)UnMediatedBody.myCollider.bounds.ClosestPoint((Vector2)Room.roomArea.bounds.ClosestPoint((Vector2)UnMediatedBody.TruePosition));
+                        System.Console.WriteLine("Reached here 2.6");
+                        var ClosestRoomPoint = (Vector2)Room.roomArea.bounds.ClosestPoint((Vector2)ClosestBodyPoint);
+                        System.Console.WriteLine("Reached here 2.7");
+                        var DistToRoom = Vector3.Distance(ClosestBodyPoint, ClosestRoomPoint);
+                        System.Console.WriteLine("Reached here 2.8");
                         if (DistToRoom < SmallestDistance)
                         {
                             SmallestDistance = DistToRoom;
                             ClosestRoom = Room;
                         }
+                        System.Console.WriteLine("Reached here 2.9");
+                        System.Console.WriteLine("SmallestDistance: "+SmallestDistance);
+                        System.Console.WriteLine("ClosestRoom: "+(int)ClosestRoom.RoomId);
+                        System.Console.WriteLine("Reached here 2.10");
                     }
-                    System.Console.WriteLine("Reached here 3");
+                    // System.Console.WriteLine("Reached here 3");
 
                     string BubbleText = "I died ";
 
                     if (SmallestDistance == 0f)
                     {
-                        BubbleText += "in... ";
+                        BubbleText += "in ";
                     }
-                    // else if (SmallestDistance < 1f)
-                    // {
-                    //     BubbleText += "close to... ";
-                    // }
                     else if (SmallestDistance < 1.5f)
                     {
-                        BubbleText += "near... ";
+                        BubbleText += "close to ";
                     }
-                    System.Console.WriteLine("Reached here 4");
+                    else/* if (SmallestDistance < 1.5f)*/
+                    {
+                        BubbleText += "near ";
+                    }
+                    // System.Console.WriteLine("Reached here 4");
 
-                    if (SmallestDistance < 2f && ClosestRoom != null && ClosestRoom.RoomId != (SystemTypes)0)
+                    if (ClosestRoom != null)
                     {
                         switch (ClosestRoom.RoomId)
                         {
@@ -224,7 +256,9 @@ namespace TownOfUs.Roles
                             case (SystemTypes)7:
                                 BubbleText += "Electrical...";
                                 break;
-
+                            case (SystemTypes)8:
+                                BubbleText += "O2...";
+                                break;
                             case (SystemTypes)9:
                                 BubbleText += "Shields...";
                                 break;
@@ -269,75 +303,85 @@ namespace TownOfUs.Roles
                                 BubbleText += "Dropship...";
                                 break;
                             case (SystemTypes)26:
-                                BubbleText += "Lower Decontamination...";
+                                BubbleText += "Decontamination...";
                                 break;
 
                             case (SystemTypes)28:
                                 BubbleText += "Specimen...";
                                 break;
                             case (SystemTypes)29:
-                                BubbleText += "Boiler Room...";
+                                BubbleText += "the Boiler Room...";
                                 break;
                             case (SystemTypes)30:
-                                BubbleText += "Vault Room...";
+                                BubbleText += "the Vault Room...";
                                 break;
                             case (SystemTypes)31:
-                                BubbleText += "Cockpit...";
+                                BubbleText += "the Cockpit...";
                                 break;
                             case (SystemTypes)32:
-                                BubbleText += "Armory...";
+                                BubbleText += "the Armory...";
                                 break;
                             case (SystemTypes)33:
-                                BubbleText += "Kitchen...";
+                                BubbleText += "the Kitchen...";
                                 break;
                             case (SystemTypes)34:
-                                BubbleText += "Viewing Deck...";
+                                BubbleText += "the Viewing Deck...";
                                 break;
                             case (SystemTypes)35:
-                                BubbleText += "Hall of Portraits...";
+                                BubbleText += "the Hall of Portraits...";
                                 break;
                             case (SystemTypes)36:
-                                BubbleText += "Cargo Bay...";
+                                BubbleText += "the Cargo Bay...";
                                 break;
                             case (SystemTypes)37:
-                                BubbleText += "Ventilation...";
+                                BubbleText += "the Ventilation Room...";
                                 break;
                             case (SystemTypes)38:
-                                BubbleText += "Showers...";
+                                BubbleText += "the Showers...";
                                 break;
                             case (SystemTypes)39:
-                                BubbleText += "Engine...";
+                                BubbleText += "the Engine Room...";
                                 break;
                             case (SystemTypes)40:
-                                BubbleText += "Brig...";
+                                BubbleText += "the Brig...";
                                 break;
                             case (SystemTypes)41:
-                                BubbleText += "Meeting Room...";
+                                BubbleText += "the Meeting Room...";
                                 break;
                             case (SystemTypes)42:
                                 BubbleText += "Records...";
                                 break;
                             case (SystemTypes)43:
-                                BubbleText += "Lounge...";
+                                BubbleText += "the Lounge...";
                                 break;
                             case (SystemTypes)44:
-                                BubbleText += "Gap Room...";
+                                BubbleText += "the Gap Room...";
                                 break;
                             case (SystemTypes)45:
-                                BubbleText += "Main Hall...";
+                                BubbleText += "the Main Hall...";
                                 break;
                             case (SystemTypes)46:
                                 BubbleText += "Medical...";
                                 break;
+
+                            case (SystemTypes)27:
+                                BubbleText = "I died somewhere outside...";
+                                break;
+
+                            default:
+                                BubbleText = "I didn't die close to any room...";
+                                break;
                         }
                     }
-                    else {
-                        BubbleText += "somewhere... outside...";
+                    else
+                    {
+                        BubbleText = "I didn't die close to any room...";
                     }
+
                     MediateBubble.chatBubPool.activeChildren[0].Cast<ChatBubble>().SetText(BubbleText);
 
                     MediatedPlayers.Add(UnMediatedBody.ParentId);
-                    System.Console.WriteLine("Reached here 5");
+                    // System.Console.WriteLine("Reached here 5");
                 }
             }
 

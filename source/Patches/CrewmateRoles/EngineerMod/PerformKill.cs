@@ -17,13 +17,15 @@ namespace TownOfUs.CrewmateRoles.EngineerMod
             if (PlayerControl.LocalPlayer.Data.IsDead) return false;
             if (!__instance.enabled) return false;
             var role = Role.GetRole<Engineer>(PlayerControl.LocalPlayer);
-            if (role.UsedThisRound) return false;
             var system = ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
             var specials = system.specials.ToArray();
             var dummyActive = system.dummy.IsActive;
             var sabActive = specials.Any(s => s.IsActive);
             if (!sabActive | dummyActive) return false;
+            if (!role.ButtonUsable) return false;
+
             role.UsedThisRound = true;
+            role.UsesLeft--;
 
             switch (PlayerControl.GameOptions.MapId)
             {

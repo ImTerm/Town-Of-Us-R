@@ -350,10 +350,11 @@ namespace TownOfUs
         public static IEnumerator FlashCoroutine(Color color, float waitfor = 1f, float alpha = 0.3f)
         {
             color.a = alpha;
+            Color oldcolor = new Color();
             if (HudManager.InstanceExists && HudManager.Instance.FullScreen)
             {
                 var fullscreen = DestroyableSingleton<HudManager>.Instance.FullScreen;
-                var oldcolour = fullscreen.color;
+                oldcolor = fullscreen.color;
                 fullscreen.enabled = true;
                 fullscreen.color = color;
             }
@@ -363,6 +364,7 @@ namespace TownOfUs
             if (HudManager.InstanceExists && HudManager.Instance.FullScreen)
             {
                 var fullscreen = DestroyableSingleton<HudManager>.Instance.FullScreen;
+                fullscreen.color = oldcolor;
                 fullscreen.enabled = false;
             }
         }

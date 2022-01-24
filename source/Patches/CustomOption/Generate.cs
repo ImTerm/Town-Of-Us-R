@@ -93,6 +93,8 @@ namespace TownOfUs.CustomOption
         public static CustomToggleOption SheriffKillsArsonist;
         public static CustomToggleOption SheriffKillsAgent;
         public static CustomNumberOption SheriffKillCd;
+        public static CustomNumberOption SheriffMaxUses;
+        public static CustomToggleOption SheriffPerRound;
         public static CustomToggleOption SheriffBodyReport;
 
 
@@ -104,7 +106,8 @@ namespace TownOfUs.CustomOption
 
 
         public static CustomHeaderOption Engineer;
-        public static CustomStringOption EngineerPer;
+        public static CustomNumberOption FixMaxUses;
+        public static CustomToggleOption FixPerRound;
 
         public static CustomHeaderOption Investigator;
         public static CustomNumberOption FootprintSize;
@@ -117,6 +120,8 @@ namespace TownOfUs.CustomOption
         public static CustomToggleOption RewindRevive;
         public static CustomNumberOption RewindDuration;
         public static CustomNumberOption RewindCooldown;
+        public static CustomNumberOption RewindMaxUses;
+        public static CustomToggleOption RewindPerRound;
         public static CustomToggleOption TimeLordVitals;
 
         public static CustomHeaderOption Medic;
@@ -129,6 +134,8 @@ namespace TownOfUs.CustomOption
 
         public static CustomHeaderOption Seer;
         public static CustomNumberOption SeerCooldown;
+        public static CustomNumberOption SeeMaxUses;
+        public static CustomToggleOption SeePerRound;
         public static CustomStringOption SeerInfo;
         public static CustomStringOption SeeReveal;
         public static CustomToggleOption NeutralRed;
@@ -138,10 +145,15 @@ namespace TownOfUs.CustomOption
 
         public static CustomHeaderOption Medium;
         public static CustomNumberOption MediateCooldown;
+        public static CustomNumberOption MediateMaxUses;
+        public static CustomToggleOption MediatePerRound;
         public static CustomToggleOption ShowMediatePlayer;
+        public static CustomToggleOption MediumVitals;
 
         public static CustomHeaderOption Transporter;
         public static CustomNumberOption TransportCooldown;
+        public static CustomNumberOption TransportMaxUses;
+        public static CustomToggleOption TransportPerRound;
         public static CustomToggleOption TransporterVitals;
 
         public static CustomHeaderOption Jester;
@@ -158,6 +170,7 @@ namespace TownOfUs.CustomOption
         public static CustomToggleOption GlitchHack;
         public static CustomToggleOption GlitchMimic;
         public static CustomToggleOption GlitchVent;
+        public static CustomToggleOption GlitchWinsTwoAlive;
 
         public static CustomHeaderOption Morphling;
         public static CustomNumberOption MorphlingCooldown;
@@ -243,6 +256,7 @@ namespace TownOfUs.CustomOption
 
         public static Func<object, string> PercentFormat { get; } = value => $"{value:0}%";
         private static Func<object, string> CooldownFormat { get; } = value => $"{value:0.0#}s";
+        private static Func<object, string> UsesFormat { get; } = value => (value != null && value.ToString().Equals("0")) ? $"Unlimited" : $"{value}";
 
 
         public static void GenerateAll()
@@ -408,13 +422,19 @@ namespace TownOfUs.CustomOption
 
             SheriffKillCd =
                 new CustomNumberOption(num++, "Sheriff Kill Cooldown", 25f, 10f, 40f, 2.5f, CooldownFormat);
+            SheriffMaxUses =
+                 new CustomNumberOption(num++, "Maximum Kills", 0, 0, 30, 1, UsesFormat);
+            SheriffPerRound =
+                 new CustomToggleOption(num++, "Only One Kill Per Round", false);
             SheriffBodyReport = new CustomToggleOption(num++, "Sheriff Can Report Who They've Killed");
 
 
             Engineer =
                 new CustomHeaderOption(num++, "<color=#FFA60AFF>Engineer</color>");
-            EngineerPer =
-                new CustomStringOption(num++, "Engineer Fix Per", new[] { "Round", "Game" });
+            FixMaxUses =
+                 new CustomNumberOption(num++, "Maximum Sabotage Fixes", 0, 0, 30, 1, UsesFormat);
+            FixPerRound =
+                 new CustomToggleOption(num++, "Only One Sabotage Fix Per Round", true);
 
             Swapper =
                 new CustomHeaderOption(num++, "<color=#66E666FF>Swapper</color>");
@@ -436,43 +456,42 @@ namespace TownOfUs.CustomOption
             RewindRevive = new CustomToggleOption(num++, "Revive During Rewind", false);
             RewindDuration = new CustomNumberOption(num++, "Rewind Duration", 2f, 2f, 5f, 0.5f, CooldownFormat);
             RewindCooldown = new CustomNumberOption(num++, "Rewind Cooldown", 25f, 10f, 60f, 2.5f, CooldownFormat);
-
+            RewindMaxUses =
+                 new CustomNumberOption(num++, "Maximum Rewinds", 0, 0, 30, 1, UsesFormat);
+            RewindPerRound =
+                 new CustomToggleOption(num++, "Only One Rewind Per Round", false);
             TimeLordVitals =
                 new CustomToggleOption(num++, "Time Lord Can Use Vitals", false);
 
             Medic =
                 new CustomHeaderOption(num++, "<color=#006600FF>Medic</color>");
-
             ShowShielded =
                 new CustomStringOption(num++, "Show Shielded Player",
                     new[] { "Self", "Medic", "Self+Medic", "Everyone" });
-
             WhoGetsNotification =
                 new CustomStringOption(num++, "Who Gets Murder Attempt Indicator",
                     new[] { "Medic", "Shielded", "Everyone", "Nobody" });
-
-            ShieldBreaks = new CustomToggleOption(num++, "Shield Breaks On Murder Attempt", false);
-
-            MedicReportSwitch = new CustomToggleOption(num++, "Show Medic Reports");
-
+            ShieldBreaks =
+                new CustomToggleOption(num++, "Shield Breaks On Murder Attempt", false);
+            MedicReportSwitch =
+                new CustomToggleOption(num++, "Show Medic Reports");
             MedicReportNameDuration =
                 new CustomNumberOption(num++, "Time Where Medic Will Have Name", 0, 0, 60, 2.5f,
                     CooldownFormat);
-
             MedicReportColorDuration =
                 new CustomNumberOption(num++, "Time Where Medic Will Have Color Type", 15, 0, 120, 2.5f,
                     CooldownFormat);
 
             Seer =
                 new CustomHeaderOption(num++, "<color=#FFCC80FF>Seer</color>");
-
             SeerCooldown =
                 new CustomNumberOption(num++, "Seer Cooldown", 25f, 10f, 100f, 2.5f, CooldownFormat);
-
+            SeeMaxUses =
+                 new CustomNumberOption(num++, "Maximum Reveals", 0, 0, 30, 1, UsesFormat);
+            SeePerRound =
+                 new CustomToggleOption(num++, "Only One Reveal Per Round", false);
             SeerInfo =
                 new CustomStringOption(num++, "Info That Seer Sees", new[] { "Role", "Team" });
-
-
             SeeReveal =
                 new CustomStringOption(num++, "Who Sees That They Are Revealed",
                     new[] { "Crew", "Imps+Neut", "All", "Nobody" });
@@ -503,13 +522,23 @@ namespace TownOfUs.CustomOption
                 new CustomHeaderOption(num++, "<color=#A680FFFF>Medium</color>");
             MediateCooldown =
                  new CustomNumberOption(num++, "Mediate Cooldown", 20f, 0f, 60f, 2.5f, CooldownFormat);
+            MediateMaxUses =
+                 new CustomNumberOption(num++, "Maximum Mediates", 0, 0, 30, 1, UsesFormat);
+            MediatePerRound =
+                 new CustomToggleOption(num++, "Only One Mediate Per Round", false);
             ShowMediatePlayer =
                  new CustomToggleOption(num++, "Medium Knows Who The Target Is", true);
+            MediumVitals =
+                new CustomToggleOption(num++, "Medium Can Use Vitals", true);
 
             Transporter =
                 new CustomHeaderOption(num++, "<color=#00EEFFFF>Transporter</color>");
             TransportCooldown =
                  new CustomNumberOption(num++, "Transport Cooldown", 20f, 10f, 60f, 2.5f, CooldownFormat);
+            TransportMaxUses =
+                 new CustomNumberOption(num++, "Maximum Transports", 0, 0, 30, 1, UsesFormat);
+            TransportPerRound =
+                 new CustomToggleOption(num++, "Only One Transport Per Round", false);
             TransporterVitals =
                 new CustomToggleOption(num++, "Transporter Can Use Vitals", false);
 
@@ -557,6 +586,8 @@ namespace TownOfUs.CustomOption
                 new CustomToggleOption(num++, "Glitch Can Mimic", true);
             GlitchVent =
                 new CustomToggleOption(num++, "Glitch Can Vent", false);
+            GlitchWinsTwoAlive =
+                new CustomToggleOption(num++, "Glitch Wins When 1 Alive Non-Imp", false);
 
             Executioner =
                 new CustomHeaderOption(num++, "<color=#8C4005FF>Executioner</color>");
@@ -566,10 +597,8 @@ namespace TownOfUs.CustomOption
                 new CustomToggleOption(num++, "Executioner Can Button", true);
 
             Arsonist = new CustomHeaderOption(num++, "<color=#FF4D00FF>Arsonist</color>");
-
             DouseCooldown =
                 new CustomNumberOption(num++, "Douse Cooldown", 25f, 10f, 40f, 2.5f, CooldownFormat);
-
             ArsonistGameEnd = new CustomToggleOption(num++, "Game Continues As Long As Arsonist Is Alive", false);
             ArsonistButton =
                 new CustomToggleOption(num++, "Arsonist Can Button", true);

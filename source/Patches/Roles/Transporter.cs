@@ -4,12 +4,13 @@ using Object = UnityEngine.Object;
 using Hazel;
 using Reactor;
 using System.Linq;
+using TMPro;
+using Reactor.Extensions;
 
 namespace TownOfUs.Roles
 {
     public class Transporter : Role
     {
-
         public DateTime LastTransported { get; set; }
 
         public bool PressedButton;
@@ -19,6 +20,12 @@ namespace TownOfUs.Roles
         public ChatController TransportList2 { get; set; }
         public PlayerControl TransportPlayer1 { get; set; }
         public PlayerControl TransportPlayer2 { get; set; }
+
+        public int UsesLeft;
+        public TextMeshPro UsesText;
+        public bool UsedThisRound;
+
+        public bool ButtonUsable => UsesLeft != 0 && (!UsedThisRound || !CustomGameOptions.MediatePerRound);
         
         public Transporter(PlayerControl player) : base(player)
         {
@@ -35,6 +42,9 @@ namespace TownOfUs.Roles
             TransportList2 = null;
             TransportPlayer1 = null;
             TransportPlayer2 = null;
+            UsesLeft = (int) CustomGameOptions.MediateMaxUses;
+            if (UsesLeft == 0) UsesLeft = -1;
+            UsedThisRound = false;
         }
 
         public float TransportTimer()
@@ -81,7 +91,7 @@ namespace TownOfUs.Roles
                 TransportList1.CharCount.gameObject.SetActive(false);
 
                 TransportList1.OpenKeyboardButton.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().enabled = false;
-                TransportList1.OpenKeyboardButton.SetActive(false);
+                TransportList1.OpenKeyboardButton.Destroy();
 
                 TransportList1.gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>()
                     .enabled = false;
@@ -215,7 +225,7 @@ namespace TownOfUs.Roles
                 TransportList2.CharCount.gameObject.SetActive(false);
 
                 TransportList2.OpenKeyboardButton.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().enabled = false;
-                TransportList2.OpenKeyboardButton.SetActive(false);
+                TransportList2.OpenKeyboardButton.Destroy();
 
                 TransportList2.gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>()
                     .enabled = false;
@@ -302,6 +312,8 @@ namespace TownOfUs.Roles
                                             if (player.Data.PlayerName == bubble.Cast<ChatBubble>().NameText.text)
                                             {
                                                 LastTransported = DateTime.UtcNow;
+                                                UsesLeft--;
+                                                UsedThisRound = true;
 
                                                 TransportPlayer2 = player;
 

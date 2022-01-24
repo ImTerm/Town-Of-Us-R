@@ -76,10 +76,13 @@ namespace TownOfUs.Roles
         {
             if (Player.Data.IsDead || Player.Data.Disconnected) return true;
 
-            if (PlayerControl.AllPlayerControls.ToArray().Count(x => !x.Data.IsDead && !x.Data.Disconnected) <= 2 &&
+            if ((!CustomGameOptions.GlitchWinsTwoAlive && 
+                PlayerControl.AllPlayerControls.ToArray().Count(x => !x.Data.IsDead && !x.Data.Disconnected) <= 1) ||
+                (CustomGameOptions.GlitchWinsTwoAlive &&
+                PlayerControl.AllPlayerControls.ToArray().Count(x => !x.Data.IsDead && !x.Data.Disconnected) <= 2 &&
                 PlayerControl.AllPlayerControls.ToArray().Count(x => !x.Data.IsDead && !x.Data.Disconnected && x.Data.IsImpostor()) == 0 &&
                 PlayerControl.AllPlayerControls.ToArray().Count(x => CustomGameOptions.ArsonistGameEnd && !x.Data.IsDead && !x.Data.Disconnected && x.Is(RoleEnum.Arsonist)) == 0 &&
-                PlayerControl.AllPlayerControls.ToArray().Count(x => CustomGameOptions.AgentGameEnd && !x.Data.IsDead && !x.Data.Disconnected && x.Is(RoleEnum.Agent)) == 0)
+                PlayerControl.AllPlayerControls.ToArray().Count(x => CustomGameOptions.AgentGameEnd && !x.Data.IsDead && !x.Data.Disconnected && x.Is(RoleEnum.Agent)) == 0))
             {
                 var writer = AmongUsClient.Instance.StartRpcImmediately(
                     PlayerControl.LocalPlayer.NetId,
@@ -661,7 +664,7 @@ namespace TownOfUs.Roles
                     __gInstance.MimicList.CharCount.gameObject.SetActive(false);
 
                     __gInstance.MimicList.OpenKeyboardButton.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().enabled = false;
-                    __gInstance.MimicList.OpenKeyboardButton.SetActive(false);
+                    __gInstance.MimicList.OpenKeyboardButton.Destroy();
 
                     __gInstance.MimicList.gameObject.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>()
                         .enabled = false;
@@ -685,8 +688,11 @@ namespace TownOfUs.Roles
 
                     __gInstance.MimicList.chatBubPool.activeChildren.Clear();
 
-                    foreach (var player in PlayerControl.AllPlayerControls.ToArray()
-                        .Where(x => x != PlayerControl.LocalPlayer && !x.Data.Disconnected))
+                    foreach (var player in PlayerControl.AllPlayerControls.ToArray().Where(x =>
+                        x != null &&
+                        x.Data != null &&
+                        x != PlayerControl.LocalPlayer &&
+                        !x.Data.Disconnected))
                     {
                         if (!player.Data.IsDead)
                             __gInstance.MimicList.AddChat(player, "Click here");

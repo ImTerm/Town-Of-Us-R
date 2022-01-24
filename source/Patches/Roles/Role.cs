@@ -7,6 +7,7 @@ using Reactor.Extensions;
 using TMPro;
 using TownOfUs.ImpostorRoles.CamouflageMod;
 using TownOfUs.Roles.Modifiers;
+using TownOfUs.CrewmateRoles.SeerMod;
 using TownOfUs.NeutralRoles.AgentMod;
 using UnhollowerBaseLib;
 using UnityEngine;
@@ -112,6 +113,7 @@ namespace TownOfUs.Roles
                 CustomGameOptions.ImpostorSeeRoles) return true;
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Glitch) && Role.GetRole<Glitch>(PlayerControl.LocalPlayer).ProtectRevealed.Contains(Player.PlayerId) &&
                 (CustomGameOptions.ImpShieldReveal == ImpProtectRevealEnum.Imp || CustomGameOptions.ImpShieldReveal == ImpProtectRevealEnum.Both)) return true;
+            if (PlayerControl.LocalPlayer.Is(RoleEnum.Seer) && CustomGameOptions.SeerInfo == SeerInfo.Role && Role.GetRole<Seer>(PlayerControl.LocalPlayer).Investigated.Contains(Player.PlayerId)) return true;
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Agent) && CustomGameOptions.IntelInfo == IntelInfo.Role && Role.GetRole<Agent>(PlayerControl.LocalPlayer).IntelPlayers.Contains(Player.PlayerId)) return true;
             if (PlayerControl.LocalPlayer.Is(RoleEnum.Mastermind) && Role.GetRole<Mastermind>(PlayerControl.LocalPlayer).Reported.Contains(Player.PlayerId)) return true;
             return GetRole(PlayerControl.LocalPlayer) == this;
